@@ -1,42 +1,46 @@
-# Material de Ayudantía — Machine Learning
+# Machine Learning — Repositorio de Ayudantías
 
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Scikit--Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.11-204a87?style=flat-square&logo=python&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-0.24+-f39c12?style=flat-square&logo=scikit-learn&logoColor=white)
+![UCN](https://img.shields.io/badge/UCN-Coquimbo-003366?style=flat-square)
 
-Repositorio de apoyo con guías técnicas, glosario y material práctico para las ayudantías de Machine Learning.
-
----
-
-## Guías de Estudio
-
-Documentación técnica y conceptual disponible para consulta permanente.
-
-| # | Guía | Descripción |
-| :---: | :--- | :--- |
-| 00 | [Control de Versiones con Git y GitHub](guias/00-git-github.md) | Comandos esenciales, flujo de trabajo y buenas prácticas. |
-| 01 | [Servidor Remoto y Entornos Conda](guias/01-servidor-conda.md) | Conexión SSH, gestión de ambientes (`environment.yml`) y VS Code Remote. |
-| 02 | [Nivelación Python para Data Science](guias/02-nivelacion-python.md) | Operaciones con NumPy, manipulación de DataFrames en Pandas y visualización[cite: 11]. |
-| 03 | [Glosario y Fundamentos de ML](guias/03-glosario-ml.md) | Métricas de evaluación, sesgo-varianza, funciones de costo y formalización[cite: 2, 7, 10]. |
+Espacio centralizado de recursos técnicos, guías de inducción y código fuente para las sesiones prácticas de Machine Learning en la Universidad Católica del Norte (Sede Coquimbo).
 
 ---
 
-## Material por Sesión
+### Información General
 
-Los recursos y códigos de cada ayudantía se publicarán semanalmente a medida que avance el semestre.
-
-| Sesión | Tema | Estado |
-| :---: | :--- | :---: |
-| 01 | *Por definir* | Próximamente |
-| 02 | *Por definir* | Próximamente |
-| 03 | *Por definir* | Próximamente |
-| 04 | *Por definir* | Próximamente |
-| 05 | *Por definir* | Próximamente |
-
----
-
-## Información
-
-* **Institución:** Universidad Católica del Norte — Sede Coquimbo
+* **Cátedra:** Machine Learning
 * **Profesor:** Dr. Juan Bekios Calfa
 * **Ayudante:** Gael Ortega
 * **Contacto:** gael.ortega@alumnos.ucn.cl
+
+---
+
+### Módulos y Guías de Consulta
+
+Documentación transversal para la configuración de herramientas y nivelación conceptual:
+
+* **[00] Git & GitHub** — `guias/00-git-github.md`  
+  Fundamentos de control de versiones, flujo de trabajo y buenas prácticas.
+
+* **[01] Servidor y Entornos Conda** — `guias/01-servidor-conda.md`  
+  Conexión remota por SSH, gestión de ambientes reproducibles y VS Code Remote.
+
+* **[02] Nivelación Python para Data Science** — `guias/02-nivelacion-python.md`  
+  Estructuras de datos, cálculo matricial con NumPy y manipulación de DataFrames en Pandas.
+
+* **[03] Glosario Técnico de ML** — `guias/03-glosario-ml.md`  
+  Definiciones formales, funciones de costo, sesgo-varianza y métricas de evaluación.
+
+---
+
+### Registro Semanal de Sesiones
+
+El material correspondiente a cada ayudantía se incorporará a medida que se desarrollen las clases prácticas:
+
+* **Ayudantía 01:** *Pendiente de publicación*
+
+---
+
+> **Nota de uso:** Este repositorio está concebido como material de lectura y descarga de recursos. No requiere clonación ni gestión de forks.
