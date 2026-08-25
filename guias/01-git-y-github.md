@@ -218,7 +218,7 @@ flowchart TD
     C --> D[git diff]
     D --> E[git add ...]
     E --> F[git diff --staged]
-    F --> G[git commit -m "..."]
+    F --> G[git commit -m ...]
     G --> H[git push]
 ```
 
