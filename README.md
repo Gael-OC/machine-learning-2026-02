@@ -24,7 +24,7 @@ Documentación transversal para la configuración de herramientas y nivelación 
 * **[00] Git Básico** — [Ver guía](./guias/00-git-basico.md)
   Fundamentos de control de versiones, commits, ramas, .gitignore y flujo de trabajo local con Git.
 
-* **[01] Git y Github** — [Ver guía](./guias/01-git-github.md)
+* **[01] Git y Github** — [Ver guía](./guias/01-git-y-github.md)
   Conexión con GitHub, repositorios remotos, push, pull, autenticación, trabajo colaborativo y herramientas como LazyGit.
 
 * **[02] Servidor y Entornos Conda** — [Ver guía](./guias/02-servidor-conda.md)

@@ -1,4 +1,4 @@
-# Guía 01 — Git Básico
+# Guía 00 — Git Básico
 
 > **Objetivo:** aprender a usar Git desde cero para guardar versiones de un proyecto y trabajar de forma ordenada.
 >

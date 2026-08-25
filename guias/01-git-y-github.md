@@ -1,4 +1,4 @@
-# Guía 02 — Git y GitHub
+# Guía 01 — Git y GitHub
 
 > **Objetivo:** conectar tu repositorio Git con GitHub y aprender el flujo de trabajo que usaremos en los laboratorios, tanto desde tu computador como desde el servidor de la universidad.
 
