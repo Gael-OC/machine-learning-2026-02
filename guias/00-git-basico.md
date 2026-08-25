@@ -23,9 +23,9 @@ Por ahora trabajaremos solo con Git localmente. Más adelante veremos cómo cone
 Git puede entenderse como tres espacios: tus archivos de trabajo, la zona de preparación (*staging*) y el historial de commits.
 
 ```mermaid
-flowchart LR
-    A[Archivos de trabajo] -->|git add| B[Staging Area]
-    B -->|git commit| C[Repositorio local]
+graph LR
+    A["Archivos de trabajo"] -->|git add| B["Staging Area"]
+    B -->|git commit| C["Repositorio local"]
     C -->|git restore / git switch| A
 ```
 
@@ -144,14 +144,14 @@ No commits yet
 Este es el flujo que usarás constantemente:
 
 ```mermaid
-flowchart TD
-    A[Modificar archivos] --> B[git status]
-    B --> C[git diff]
-    C --> D[git add archivo]
-    D --> E[Staging Area]
-    E --> F[git diff --staged]
-    F --> G[git commit -m "mensaje"]
-    G --> H[Historial local]
+graph TD
+    A["Modificar archivos"] --> B["git status"]
+    B --> C["git diff"]
+    C --> D["git add archivo"]
+    D --> E["Staging Area"]
+    E --> F["git diff --staged"]
+    F --> G["git commit -m mensaje"]
+    G --> H["Historial local"]
 ```
 
 ### 5.1 Ver qué cambió
@@ -472,4 +472,3 @@ La siguiente guía explica:
 | `git restore --staged archivo` | Sacar del staging |
 | `git branch` | Ver ramas |
 | `git switch rama` | Cambiar de rama |
-
