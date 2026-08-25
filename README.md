@@ -21,16 +21,19 @@ Espacio centralizado de recursos técnicos, guías de inducción y código fuent
 
 Documentación transversal para la configuración de herramientas y nivelación conceptual:
 
-* **[00] Git & GitHub** — `guias/00-git-github.md`  
-  Fundamentos de control de versiones, flujo de trabajo y buenas prácticas.
+* **[00] Git & GitHub** — `guias/00-git-basico.md`  
+  Fundamentos de control de versiones, commits, ramas, .gitignore y flujo de trabajo local con Git.
 
-* **[01] Servidor y Entornos Conda** — `guias/01-servidor-conda.md`  
+* **[01] Servidor y Entornos Conda** — `guias/01-git-github.md`  
+  Conexión con GitHub, repositorios remotos, push, pull, autenticación, trabajo colaborativo y herramientas como LazyGit.
+
+* **[02] Nivelación Python para Data Science** — `guias/02-servidor-conda.md`  
   Conexión remota por SSH, gestión de ambientes reproducibles y VS Code Remote.
 
-* **[02] Nivelación Python para Data Science** — `guias/02-nivelacion-python.md`  
+* **[03] Nivelación Python para Data Science** — `guias/03-nivelacion-python.md`  
   Estructuras de datos, cálculo matricial con NumPy y manipulación de DataFrames en Pandas.
 
-* **[03] Glosario Técnico de ML** — `guias/03-glosario-ml.md`  
+* **[04] Glosario Técnico de ML** — `guias/04-glosario-ml.md`  
   Definiciones formales, funciones de costo, sesgo-varianza y métricas de evaluación.
 
 ---
