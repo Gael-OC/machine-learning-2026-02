@@ -46,11 +46,17 @@ flowchart TD
 
 ---
 
-## 2. Cómo conectarte por SSH
+---
+
+## 2. Cómo conectarte por SSH (De lo manual a lo automático)
+
+Para conectarte al servidor puedes seguir una progresión de tres niveles, donde cada uno mejora la comodidad del anterior:
 
 ---
 
-### Opción A: Conexión manual por terminal
+### 2.1 Nivel 1: Conexión manual por terminal (Básico)
+
+Es la forma directa de conectarte sin configurar nada previo en tu equipo:
 
 #### 1. Si estás dentro de la U (conectado a Wi-Fi UCN o Eduroam):
 Te conectas directamente al servidor interno:
@@ -73,9 +79,9 @@ ssh puente@146.83.128.60 -p 22280
 
 ---
 
-### Opción B: Conexión automática con un solo comando (Recomendada)
+### 2.2 Nivel 2: Automatizar la conexión en tu computador (Recomendado)
 
-Para no escribir puertos ni claves del puente cada vez, puedes configurar el archivo `~/.ssh/config` en tu computador.
+Para no escribir la dirección IP, puertos ni claves del puente cada vez que quieras conectarte, puedes guardar la configuración de `servidor-ucn` en tu archivo local `~/.ssh/config`.
 
 #### En macOS:
 
@@ -127,7 +133,7 @@ En Windows, OpenSSH viene integrado nativamente.
    ```
 
 #### Cómo usarlo:
-Una vez guardada la configuración, desde cualquier terminal en tu computador solo escribes:
+Una vez guardada esta configuración, ya no necesitas recordar IPs ni puertos. Desde cualquier terminal en tu computador solo escribes:
 
 ```bash
 ssh servidor-ucn
@@ -135,16 +141,18 @@ ssh servidor-ucn
 
 ---
 
-### Opción C: Conectarte con la interfaz de VS Code (Remote - SSH)
+### 2.3 Nivel 3: Conexión visual con VS Code Remote - SSH
 
-Si prefieres ver las carpetas y archivos del servidor en la interfaz de VS Code:
+> **Requisito previo:** Para usar esta función es necesario haber completado el **Nivel 2 (Sección 2.2)**, ya que la extensión de VS Code lee automáticamente los datos de tu archivo `~/.ssh/config` para establecer la conexión.
 
-1. En VS Code de tu computador, instala la extensión oficial **Remote - SSH** (de Microsoft).
+Si prefieres ver las carpetas y archivos del servidor directamente en la interfaz gráfica de VS Code:
+
+1. En el VS Code de tu computador, instala la extensión oficial **Remote - SSH** (de Microsoft).
 2. Presiona `Ctrl+Shift+P` (o `Cmd+Shift+P` en Mac) y escribe:
    ```text
    Remote-SSH: Connect to Host...
    ```
-3. Selecciona `servidor-ucn` (lo detectará automáticamente de tu archivo `.ssh/config`).
+3. Selecciona `servidor-ucn` (aparecerá en la lista gracias a la configuración del paso anterior).
 4. Se abrirá una ventana de VS Code conectada directamente al servidor remoto. Puedes abrir tu carpeta de trabajo con **File → Open Folder**.
 
 ---
