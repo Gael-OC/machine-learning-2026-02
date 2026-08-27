@@ -409,6 +409,8 @@ En Machine Learning supervisado, el objetivo final del preprocesamiento es const
 * **$X$ (Matriz de características / Features):** Arreglo 2D de tamaño `(n_muestras, n_atributos)`.
 * **$y$ (Vector objetivo / Target):** Arreglo 1D de tamaño `(n_muestras,)`.
 
+### 5.1 Partición de datos (Train / Test Split)
+
 ```python
 from sklearn.model_selection import train_test_split
 
@@ -426,6 +428,39 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print(f"Muestras de entrenamiento: {X_train.shape[0]}")
 print(f"Muestras de prueba: {X_test.shape[0]}")
+```
+
+---
+
+### 5.2 Construcción de Pipelines y Prevención de Fuga de Datos (*Data Leakage*)
+
+> **Regla de oro de la cátedra:** Nunca ajustes transformadores o escaladores (`fit` o `fit_transform`) sobre el dataset completo ni sobre el conjunto de test. Toda transformación debe aprenderse **únicamente** en el conjunto de entrenamiento (`X_train`) y aplicarse (`transform`) sobre prueba (`X_test`).
+
+La forma profesional de garantizar esto en Scikit-Learn es mediante un **`Pipeline`**:
+
+```python
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import Ridge
+from sklearn.metrics import mean_squared_error, r2_score
+
+# 1. Definir el flujo secuencial: Preprocesamiento -> Modelo
+pipeline = Pipeline([
+    ("escalador", StandardScaler()),
+    ("regresor", Ridge(alpha=1.0))
+])
+
+# 2. Entrenar: 'fit' ajusta el escalador en X_train y entrena el modelo
+pipeline.fit(X_train, y_train)
+
+# 3. Predecir y evaluar: 'predict' escala X_test con las medias de train automáticamente
+y_pred = pipeline.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f"MSE en Test: {mse:.4f}")
+print(f"R^2 en Test: {r2:.4f}")
 ```
 
 ---

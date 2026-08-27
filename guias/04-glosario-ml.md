@@ -97,40 +97,81 @@ Un agente aprende a tomar decisiones secuenciales interactuando con un entorno, 
 
 ---
 
-## 4. Optimización: Descenso del Gradiente (*Gradient Descent*)
+## 4. Optimización: Solución Analítica y Descenso del Gradiente
 
-Es el algoritmo de optimización fundamental en Machine Learning para encontrar los parámetros $\theta$ que minimizan la función de costo $J(\theta)$.
-
-### Regla de actualización:
-$$\theta \leftarrow \theta - \alpha \nabla J(\theta)$$
-
-Donde $\alpha > 0$ es la **tasa de aprendizaje (*learning rate*)**:
-* Si $\alpha$ es **muy pequeño:** el entrenamiento es extremadamente lento.
-* Si $\alpha$ es **muy grande:** el algoritmo puede oscilar o divergir sin encontrar el mínimo.
+El entrenamiento de modelos supervisados consiste en encontrar los parámetros que minimizan la función de costo $J(\mathbf{w})$ o $J(\theta)$.
 
 ```mermaid
 flowchart LR
-    Batch["Batch GD<br/>(Usa todo el dataset en cada paso; exacto pero lento)"]
-    SGD["Stochastic GD (SGD)<br/>(Usa 1 muestra por paso; muy rápido pero ruidoso)"]
-    Mini["Mini-Batch GD<br/>(Usa lotes de 32, 64 o 128 muestras; estándar moderno)"]
+    Sol["Optimización de Parámetros"] --> Ana["Solución Analítica<br/>(Ecuaciones Normales OLS)"]
+    Sol --> Iter["Solución Iterativa<br/>(Descenso del Gradiente)"]
+    
+    Iter --> Batch["Batch GD (Dataset completo)"]
+    Iter --> SGD["Stochastic GD (1 muestra por paso)"]
+    Iter --> Mini["Mini-Batch GD (Lotes de 32 a 128)"]
 ```
+
+---
+
+### 4.1 Solución Analítica: Ecuaciones Normales (Mínimos Cuadrados Ordinarios)
+
+En problemas lineales con función de costo cuadrática (MSE), es posible despejar directamente el vector de parámetros óptimo $\mathbf{w}^*$ sin iterar.
+
+Si construimos la **matriz de diseño extendida** $\mathbf{X} \in \mathbb{R}^{m \times (D+1)}$ agregando una columna de unos para el término de sesgo o intercepto ($b \equiv w_0$):
+
+$$\mathbf{X} = \begin{bmatrix} x_1^{(1)} & x_2^{(1)} & \dots & x_D^{(1)} & 1 \\ x_1^{(2)} & x_2^{(2)} & \dots & x_D^{(2)} & 1 \\ \vdots & \vdots & \ddots & \vdots & \vdots \\ x_1^{(m)} & x_2^{(m)} & \dots & x_D^{(m)} & 1 \end{bmatrix}, \quad \mathbf{w} = \begin{bmatrix} w_1 \\ w_2 \\ \vdots \\ w_D \\ b \end{bmatrix}, \quad \mathbf{y} = \begin{bmatrix} y^{(1)} \\ y^{(2)} \\ \vdots \\ y^{(m)} \end{bmatrix}$$
+
+El vector óptimo $\mathbf{w}^*$ que minimiza la suma de errores al cuadrado satisface:
+
+$$\mathbf{w}^* = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}$$
+
+* **Ventaja:** Solución exacta y cerrada en un solo paso algebraico.
+* **Limitación:** Requiere calcular la inversa $(\mathbf{X}^T \mathbf{X})^{-1}$ con complejidad computacional $\mathcal{O}(D^3)$. Es inviable cuando $D$ es muy grande o si existe **multicolinealidad** (matriz singular o casi singular no invertible).
+
+---
+
+### 4.2 Solución Iterativa: Descenso del Gradiente (*Gradient Descent*)
+
+Es el algoritmo de optimización general para encontrar los parámetros cuando no existe solución analítica cerrada o cuando la cantidad de atributos es masiva.
+
+#### Regla de actualización vectorial general:
+$$\mathbf{w} \leftarrow \mathbf{w} - \alpha \nabla_{\mathbf{w}} J(\mathbf{w})$$
+
+Donde $\alpha > 0$ es la **tasa de aprendizaje (*learning rate*)**:
+* Si $\alpha$ es **muy pequeño:** el entrenamiento es extremadamente lento.
+* Si $\alpha$ es **muy grande:** el algoritmo oscila o diverge sin converger al mínimo.
+
+#### Fórmulas de Gradiente en la Cátedra:
+
+1. **Para Regresión Lineal con MSE ($J(\mathbf{w}) = \frac{1}{m} \sum_{i=1}^m (\hat{y}^{(i)} - y^{(i)})^2$):**
+   
+   * **Forma vectorial:**
+     $$\nabla_{\mathbf{w}} J(\mathbf{w}) = \frac{2}{m} \mathbf{X}^T (\mathbf{X}\mathbf{w} - \mathbf{y}) = \frac{2}{m} \mathbf{X}^T (\hat{\mathbf{y}} - \mathbf{y})$$
+   
+   * **Forma por componentes (evaluaciones a mano con calculadora):**
+     $$\frac{\partial J}{\partial w_j} = \frac{2}{m} \sum_{i=1}^m \left(\hat{y}^{(i)} - y^{(i)}\right) x_j^{(i)}, \qquad \frac{\partial J}{\partial b} = \frac{2}{m} \sum_{i=1}^m \left(\hat{y}^{(i)} - y^{(i)}\right)$$
+
+2. **Para Regresión Logística con Entropía Cruzada Binaria:**
+   
+   * Siendo $\hat{y}^{(i)} = \sigma(\mathbf{w}^T \mathbf{x}^{(i)} + b) = \frac{1}{1 + e^{-(\mathbf{w}^T \mathbf{x}^{(i)} + b)}}$:
+     $$\nabla_{\mathbf{w}} J(\mathbf{w}) = \frac{1}{m} \sum_{i=1}^m \left(\hat{y}^{(i)} - y^{(i)}\right) \mathbf{x}^{(i)}, \qquad \frac{\partial J}{\partial b} = \frac{1}{m} \sum_{i=1}^m \left(\hat{y}^{(i)} - y^{(i)}\right)$$
 
 ---
 
 ## 5. Funciones de Pérdida y de Costo
 
-* **Función de Pérdida ($L(\hat{y}^{(i)}, y^{(i)})$):** Error en una **única muestra** individual.
-* **Función de Costo ($J(\theta)$):** Promedio del error en **todo el conjunto de datos**.
+* **Función de Pérdida ($L(\hat{y}^{(i)}, y^{(i)})$):** Error medido en una **única muestra** individual.
+* **Función de Costo ($J(\mathbf{w})$ o $J(\theta)$):** Promedio o suma acumulada del error en **todo el conjunto de entrenamiento**.
 
 ### 5.1 Para Problemas de Regresión
 
 #### Error Cuadrático Medio (MSE - *Mean Squared Error*)
-Penaliza con mayor fuerza los errores grandes debido a la potencia cuadrática (sensible a *outliers*):
+Penaliza con mayor fuerza los errores grandes debido a la potencia cuadrática (sensible a *outliers* y base del método OLS):
 
-$$MSE = \frac{1}{N} \sum_{i=1}^N \left(y^{(i)} - \hat{y}^{(i)}\right)^2$$
+$$MSE = J(\mathbf{w}) = \frac{1}{N} \sum_{i=1}^N \left(y^{(i)} - \hat{y}^{(i)}\right)^2$$
 
 #### Error Absoluto Medio (MAE - *Mean Absolute Error*)
-Mide la magnitud promedio del error en escala lineal (robusto frente a *outliers*):
+Mide la magnitud promedio del error en escala lineal (robusto frente a valores atípicos):
 
 $$MAE = \frac{1}{N} \sum_{i=1}^N |y^{(i)} - \hat{y}^{(i)}|$$
 
@@ -139,12 +180,12 @@ $$MAE = \frac{1}{N} \sum_{i=1}^N |y^{(i)} - \hat{y}^{(i)}|$$
 ### 5.2 Para Problemas de Clasificación
 
 #### Entropía Cruzada Binaria / Log-Loss (*Binary Cross-Entropy*)
-Derivada del principio estadístico de Máxima Verosimilitud (*Maximum Likelihood Estimation - MLE*). Se utiliza cuando la salida del modelo $\hat{y} = \sigma(z) \in [0, 1]$ es una probabilidad:
+Derivada del principio estadístico de **Máxima Verosimilitud (*Maximum Likelihood Estimation - MLE*)** asumiendo etiquetas $y \in \{0, 1\}$ provenientes de una distribución de Bernoulli con probabilidad $p^{(i)} = \hat{y}^{(i)} = \sigma(z^{(i)})$:
 
-$$J(\theta) = -\frac{1}{N} \sum_{i=1}^N \left[ y^{(i)} \log(\hat{y}^{(i)}) + (1 - y^{(i)}) \log(1 - \hat{y}^{(i)}) \right]$$
+$$J(\mathbf{w}, b) = -\frac{1}{N} \sum_{i=1}^N \left[ y^{(i)} \log(\hat{y}^{(i)}) + (1 - y^{(i)}) \log(1 - \hat{y}^{(i)}) \right]$$
 
-* Si $y^{(i)} = 1$ y el modelo predice $\hat{y}^{(i)} \approx 1$, el costo es $\approx 0$.
-* Si $y^{(i)} = 1$ y el modelo predice $\hat{y}^{(i)} \approx 0$, el costo tiende a $\infty$.
+* Si $y^{(i)} = 1$ y el modelo predice $\hat{y}^{(i)} \to 1$, el costo asociado tiende a $0$.
+* Si $y^{(i)} = 1$ y el modelo predice $\hat{y}^{(i)} \to 0$, el costo tiende a $+\infty$.
 
 ---
 
@@ -255,14 +296,23 @@ Tabla de contingencia que cruza los valores reales con las predicciones del mode
 
 ### 8.2 Para Regresión
 
-* **Mean Squared Error (MSE):** $\frac{1}{N}\sum (y - \hat{y})^2$
-* **Root Mean Squared Error (RMSE):** $\sqrt{MSE}$ (interpretable en las mismas unidades de la variable $y$).
-* **Mean Absolute Error (MAE):** $\frac{1}{N}\sum |y - \hat{y}|$
-* **Coeficiente de Determinación ($R^2$):** Proporción de la variabilidad total de $y$ explicada por las características del modelo:
+* **Mean Squared Error (MSE):** $\frac{1}{N}\sum_{i=1}^N (y^{(i)} - \hat{y}^{(i)})^2$
+* **Root Mean Squared Error (RMSE):** $\sqrt{MSE}$ (interpretable en las mismas unidades de la variable original $y$).
+* **Mean Absolute Error (MAE):** $\frac{1}{N}\sum_{i=1}^N |y^{(i)} - \hat{y}^{(i)}|$
+* **Coeficiente de Determinación ($R^2$):** Proporción de la variabilidad total de $y$ explicada por el modelo:
   $$R^2 = 1 - \frac{\sum_{i=1}^N (y^{(i)} - \hat{y}^{(i)})^2}{\sum_{i=1}^N (y^{(i)} - \bar{y})^2}$$
   * $R^2 = 1.0$: Ajuste perfecto.
   * $R^2 = 0.0$: El modelo predice igual que la media simple $\bar{y}$.
   * $R^2 < 0.0$: El modelo tiene peor rendimiento que la media constante.
+
+* **$R^2$ Ajustado ($R^2_{\text{adj}}$):** Corrige el $R^2$ penalizando la inclusión de atributos irrelevantes según el número de muestras $N$ y variables predictoras $D$:
+  $$R^2_{\text{adj}} = 1 - \left[ \frac{(1 - R^2)(N - 1)}{N - D - 1} \right]$$
+
+* **Error Porcentual Absoluto Medio (MAPE):** Mide el error promedio en términos relativos porcentuales respecto al valor real (muy utilizado en pronóstico de demanda y reportes de gestión):
+  $$\text{MAPE} = \frac{100\%}{N} \sum_{i=1}^N \left| \frac{y^{(i)} - \hat{y}^{(i)}}{y^{(i)}} \right|$$
+
+* **Mean Bias Deviation (MBD):** Evalúa si el modelo presenta una tendencia sistemática a sobreestimar (MBD $> 0$) o subestimar (MBD $< 0$):
+  $$\text{MBD} = \frac{1}{N} \sum_{i=1}^N (y^{(i)} - \hat{y}^{(i)})$$
 
 ---
 
@@ -281,13 +331,12 @@ Tabla de contingencia que cruza los valores reales con las predicciones del mode
 
 | Algoritmo | Familia | Idea Matemática / Mecanismo | Hiperparámetros Clave |
 | :--- | :--- | :--- | :--- |
-| **Regresión Lineal** | Supervisado (Regresión) | Modela la relación lineal mediante Mínimos Cuadrados Ordinarios (OLS) o Descenso del Gradiente: $\hat{y} = Xw + b$. | `fit_intercept`, penalización (`alpha` en Ridge/Lasso). |
-| **Regresión Logística** | Supervisado (Clasificación) | Aplica la función sigmoide $\sigma(z) = \frac{1}{1 + e^{-z}}$ sobre la combinación lineal para estimar probabilidades $P(y=1\|x)$. | `C` (inverso de regularización), `penalty` ('l1', 'l2', 'elasticnet'). |
-| **Naive Bayes** | Supervisado (Clasificación) | Clasificador probabilístico basado en el Teorema de Bayes asumiendo independencia condicional entre atributos. | `var_smoothing` (Gaussiano), `alpha` (Laplace smoothing). |
+| **Regresión Lineal** | Supervisado (Regresión) | Modela la relación lineal mediante Mínimos Cuadrados Ordinarios (OLS) o Descenso del Gradiente: $\hat{y} = \mathbf{X}\mathbf{w} + b$. | `fit_intercept`, penalización (`alpha` en Ridge/Lasso). |
+| **Regresión Logística** | Supervisado (Clasificación) | Aplica la función sigmoide $\sigma(z) = \frac{1}{1 + e^{-z}}$ sobre la combinación lineal para estimar probabilidades $P(y=1\|\mathbf{x})$. | `C` (inverso de regularización $\frac{1}{\lambda}$), `penalty` ('l1', 'l2', 'elasticnet'). |
+| **Naive Bayes** | Supervisado (Clasificación) | Clasificador probabilístico basado en el Teorema de Bayes asumiendo independencia condicional entre atributos: $P(y\|\mathbf{x}) \propto P(y) \prod P(x_j\|y)$. | `var_smoothing` (Gaussiano), `alpha` (Laplace smoothing). |
 | **K-Nearest Neighbors (KNN)** | Supervisado | Clasifica o predice según la mayoría de votos o promedio de las $k$ instancias más cercanas en el espacio vectorial. | `n_neighbors` ($k$), `metric` ('euclidean', 'manhattan', 'minkowski'). |
-| **Support Vector Machines (SVM)** | Supervisado | Encuentra el hiperplano óptimo que maximiza el margen geométrico entre clases. Aplica el **Kernel Trick** (RBF, Polinomial) para fronteras no lineales. | `C` (tolerancia a infracciones de margen), `kernel` ('linear', 'rbf', 'poly'), `gamma`. |
-| **Árboles de Decisión (CART)** | Supervisado | Divide el espacio mediante particiones binarias recursivas optimizando la impureza de Gini o la Entropía / Ganancia de Información. | `max_depth`, `min_samples_split`, `min_samples_leaf`, `criterion`. |
-| **Random Forest (Bagging)** | Supervisado (*Ensemble*) | Entrena múltiples árboles de decisión independientes con muestreo con reemplazo (*Bootstrap*) y subconjuntos aleatorios de atributos para **reducir varianza**. | `n_estimators` (número de árboles), `max_features`, `max_depth`. |
-| **AdaBoost / Gradient Boosting** | Supervisado (*Ensemble*) | Entrena árboles de forma secuencial, donde cada nuevo estimador se enfoca en corregir los errores residuales de los anteriores para **reducir sesgo**. | `n_estimators`, `learning_rate`, `max_depth`. |
+| **Support Vector Machines (SVM)** | Supervisado | Encuentra el hiperplano óptimo que maximiza el margen geométrico entre clases ($\frac{2}{\|\mathbf{w}\|}$). Aplica el **Kernel Trick** (RBF, Polinomial) para fronteras no lineales. | `C` (tolerancia a infracciones de margen), `kernel` ('linear', 'rbf', 'poly'), `gamma`. |
+| **Árboles de Decisión (CART)** | Supervisado | Divide el espacio mediante particiones binarias recursivas optimizando la impureza de Gini ($1 - \sum p_i^2$) o la Entropía ($-\sum p_i \log_2 p_i$). | `max_depth`, `min_samples_split`, `min_samples_leaf`, `criterion`. |
+| **Random Forest** | Supervisado (*Ensemble*) | Entrena múltiples árboles de decisión sobre muestras bootstrap y subconjuntos de atributos para **reducir la varianza** del modelo. | `n_estimators` (número de árboles), `max_features`, `max_depth`. |
 | **K-Means** | No Supervisado (Clustering) | Agrupa los datos en $k$ clusters actualizando iterativamente los centroides $\mu_k$ hasta converger. | `n_clusters` ($k$), `init` ('k-means++'), `n_init`. |
 | **PCA (Componentes Principales)** | No Supervisado (Extracción) | Proyecta los datos en los autovectores de la matriz de covarianza ordenados por sus autovalores (varianza explicada). | `n_components` (número de componentes o % de varianza deseado). |

@@ -83,32 +83,39 @@ ssh puente@146.83.128.60 -p 22280
 
 Para no escribir la dirección IP, puertos ni claves del puente cada vez que quieras conectarte, puedes guardar la configuración de `servidor-ucn` en tu archivo local `~/.ssh/config`.
 
-#### En macOS:
+#### En macOS y Linux (Ubuntu):
 
-1. Instala `sshpass` con Homebrew (para inyectar la clave del puente automáticamente):
-   ```bash
-   brew install hudochenkov/sshpass/sshpass
-   ```
-2. Edita o crea tu archivo `~/.ssh/config`:
-   ```bash
-   nano ~/.ssh/config
-   ```
-3. Pega la siguiente configuración:
-   ```text
-   Host servidor-ucn
-       HostName 172.16.23.243
-       User <tu_usuario>
-       Port 22
-       ProxyCommand sshpass -p '<clave_del_puente>' ssh -p 22280 -W %h:%p puente@146.83.128.60
-   ```
+Tienes dos opciones según cómo prefieras gestionar la contraseña:
 
-#### En Ubuntu / Linux:
+* **Opción A (Recomendada con `ProxyJump` nativo de OpenSSH):**
+  1. Edita tu archivo `~/.ssh/config`:
+     ```bash
+     nano ~/.ssh/config
+     ```
+  2. Pega la regla estándar:
+     ```text
+     Host servidor-puente
+         HostName 146.83.128.60
+         Port 22280
+         User puente
 
-1. Instala `sshpass`:
-   ```bash
-   sudo apt install sshpass
-   ```
-2. Agrega el mismo bloque anterior en tu archivo `~/.ssh/config`.
+     Host servidor-ucn
+         HostName 172.16.23.243
+         Port 22
+         User <tu_usuario>
+         ProxyJump servidor-puente
+     ```
+
+* **Opción B (Automática sin escribir clave del puente con `sshpass`):**
+  1. En macOS: `brew install hudochenkov/sshpass/sshpass` / En Ubuntu: `sudo apt install sshpass`
+  2. En `~/.ssh/config`:
+     ```text
+     Host servidor-ucn
+         HostName 172.16.23.243
+         User <tu_usuario>
+         Port 22
+         ProxyCommand sshpass -p '<clave_del_puente>' ssh -p 22280 -W %h:%p puente@146.83.128.60
+     ```
 
 #### En Windows (PowerShell):
 

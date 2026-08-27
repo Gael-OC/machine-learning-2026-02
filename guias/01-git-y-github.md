@@ -43,6 +43,7 @@ Cuando usas GitHub desde la terminal con enlaces HTTPS (`https://github.com/...`
 > git config --global credential.helper store
 > ```
 > Con esto, Git recordará tu usuario y token después de la primera vez que lo ingreses, y no te lo volverá a pedir.
+> *(Nota de seguridad: este comando guarda el token en texto plano en `~/.git-credentials`. Es ideal para tu computador personal o tu cuenta privada en el servidor, pero si compartes cuenta en un equipo de acceso público, usa autenticación mediante llaves SSH).*
 
 ---
 
