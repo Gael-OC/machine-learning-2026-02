@@ -394,9 +394,30 @@ artifacts/
 Si quieres que las carpetas vacías aparezcan en el repositorio, puedes usar un archivo `.gitkeep`:
 
 ```bash
-mkdir -p data outputs artifacts
-touch data/.gitkeep outputs/.gitkeep artifacts/.gitkeep
+mkdir -p data notebooks src artifacts
+touch data/.gitkeep artifacts/.gitkeep
 ```
+
+### 9.1 Estructura recomendada para proyectos de ML
+
+En la asignatura organizaremos los proyectos separando responsabilidades:
+
+```text
+mi-proyecto/
+├── data/              # Datasets crudos o procesados (en .gitignore)
+├── notebooks/         # Exploración inicial (.ipynb)
+├── src/               # Código modular y reproducible (.py)
+├── artifacts/         # Modelos guardados y figuras (en .gitignore)
+├── requirements.txt   # Dependencias del proyecto
+└── README.md          # Instrucciones y documentación
+```
+
+### 9.2 Cuidado especial con Jupyter Notebooks (`.ipynb`)
+
+Los archivos `.ipynb` guardan internamente el código, el historial de ejecución y las salidas (tablas, gráficos, imágenes en base64) en formato JSON.
+
+* **Antes de hacer `git add` a un notebook:** ve al menú de Jupyter / VS Code y selecciona **Kernel → Restart & Clear All Outputs** (o Limpiar todas las salidas).
+* Esto evita guardar archivos pesados innecesarios y reduce en un 90% la posibilidad de tener conflictos de merge al trabajar con tus compañeros.
 
 > **Regla importante:** antes del primer `git add`, crea el `.gitignore`. Es mucho más fácil prevenir un error que quitar después un archivo del historial.
 
