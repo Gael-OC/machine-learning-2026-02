@@ -188,21 +188,14 @@ lazygit
 
 ---
 
-## 8. Datasets y resultados grandes con Drive y `rclone` (Opcional)
+## 8. Datasets y resultados grandes
 
 **GitHub no está hecho para guardar datos gigantes ni modelos pesados.**
 
 * **GitHub guarda:** Código, scripts, notebooks limpios y configuraciones.
-* **Google Drive / Servidor guarda:** Datasets grandes, imágenes o carpetas de datos, archivos `.parquet`, `.pkl` o `.joblib`.
+* **Tu computador / Servidor guarda:** Datasets grandes, imágenes o carpetas de datos, archivos `.parquet`, `.pkl` o `.joblib`.
 
-Para sincronizar resultados pesados entre el servidor y Google Drive usamos `rclone`:
-
-```bash
-# Copiar la carpeta artifacts a Drive sin borrar nada:
-rclone copy ./artifacts gdrive:ML-Laboratorios/Lab01/artifacts -P
-```
-
-*(La configuración detallada de `rclone` y el servidor se profundiza en la [Guía 02 — Servidor y Entornos Conda](./02-servidor-conda.md)).*
+Para mover datasets o descargar los modelos y figuras generadas en el servidor a tu computador, lo hacemos visualmente desde **VS Code Remote** (clic derecho → *Download*), como se explica en la **[Guía 02 — Servidor y Entornos Conda](./02-servidor-conda.md)**.
 
 ---
 

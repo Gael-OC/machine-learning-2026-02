@@ -1,99 +1,109 @@
 # Guía 02 — Servidor UCN y Entornos Conda
 
-> **Objetivo:** aprender a conectarte al servidor de la universidad (desde la U o desde tu casa), gestionar entornos reproducibles con Conda y ejecutar entrenamientos pesados siguiendo el flujo de trabajo del curso.
+> **Objetivo:** aprender a conectarte al servidor de la universidad (tanto desde los computadores de la U como desde tu casa), utilizar entornos reproducibles con Conda y ejecutar y descargar los resultados de tus laboratorios.
 
 Esta guía se complementa con la **[Guía 00 — Git Básico](./00-git-basico.md)** y la **[Guía 01 — Git y GitHub](./01-git-y-github.md)**.
 
 ---
 
-## 0. El flujo de trabajo en Machine Learning
+## 0. El flujo de trabajo en 4 pasos
 
-En este curso no necesitas programar directamente en la consola del servidor. El flujo estándar es:
+En este curso el flujo de trabajo estándar es muy simple y ordenado:
 
 ```mermaid
 flowchart TD
-    A["1. Tu Computador (Programar código)"] -->|git push| B["2. GitHub (Repositorio)"]
-    B -->|git pull| C["3. Servidor UCN (Entrenar con Conda)"]
-    C -->|VS Code / rclone| D["4. Tu PC o Drive (Modelos y Resultados)"]
+    A["1. Tu Computador / Lab UCN<br/>(Programar código)"] -->|git push| B["2. GitHub<br/>(Repositorio en la nube)"]
+    B -->|git pull| C["3. Servidor UCN<br/>(Entrenar modelos con Conda)"]
+    C -->|Descargar figuras y modelos| D["4. Tu Computador<br/>(Ver resultados para tu informe)"]
 ```
 
-1. **En tu computador:** Escribes tu código en VS Code o tu editor habitual y haces `git push` a GitHub.
-2. **En el servidor UCN:** Te conectas por SSH, haces `git pull` para descargar tu código, activas el entorno Conda y ejecutas los entrenamientos.
-3. **Descargar resultados:** Descargas tus figuras y modelos (`artifacts/`) directamente desde VS Code Remote (clic derecho → *Download*) o los respaldas a Google Drive con `rclone`.
+1. **En tu computador o en el lab de la U:** Escribes tu código y subes tus avances con `git push`.
+2. **En el servidor UCN:** Te conectas por SSH, descargas tu código con `git pull`, activas Conda y ejecutas los entrenamientos pesados.
+3. **Descargar resultados:** Descargas tus figuras, reportes y modelos (`artifacts/`) a tu computador para incluirlos en el informe.
 
 ---
 
-## 1. La Red del Servidor UCN
+## 1. La Red UCN: ¿Por qué hay dos servidores?
 
 La universidad cuenta con dos máquinas para este servicio:
 
-| Máquina | Dirección IP | Puerto | Uso |
+| Máquina | Dirección IP | Puerto | ¿Para qué sirve? |
 | :--- | :--- | :--- | :--- |
-| **Servidor Interno** | `172.16.23.243` | `22` | La máquina donde ejecutas el código y entrenas tus modelos. |
-| **Servidor Puente (*Jump Host*)** | `146.83.128.60` | `22280` | La puerta de entrada obligatoria cuando te conectas desde fuera de la U. |
+| **Servidor Interno** | `172.16.23.243` | `22` | La máquina de cómputo donde están tus archivos, Conda y donde ejecutas tus códigos. |
+| **Servidor Puente (*Jump Host*)** | `146.83.128.60` | `22280` | La puerta de entrada obligatoria cuando te conectas **desde tu casa o fuera de la U**. |
 
 ```mermaid
 flowchart TD
-    subgraph Fuera_de_la_U[Desde tu Casa / Internet Externo]
-        PC1[Tu Computador] -->|Puerto 22280| Puente[Servidor Puente 146.83.128.60]
-        Puente -->|Conexión automática| Servidor[Servidor Interno 172.16.23.243]
+    subgraph Dentro_de_la_U[Conectado a Wi-Fi UCN o en Laboratorios de la U]
+        PC1[Computador de la U / Tu Laptop] -->|Directo Puerto 22| Servidor[Servidor Interno 172.16.23.243]
     end
 
-    subgraph Dentro_de_la_U[Conectado a Wi-Fi UCN / Eduroam]
-        PC2[Tu Computador] -->|Directo Puerto 22| Servidor
+    subgraph Fuera_de_la_U[Desde tu Casa / Internet Externo]
+        PC2[Tu Computador] -->|Puerto 22280| Puente[Servidor Puente 146.83.128.60]
+        Puente -->|Paso automático| Servidor
     end
 ```
 
 ---
 
----
+## 2. Cómo conectarte al Servidor (Elige tu método)
 
-## 2. Cómo conectarte por SSH (De lo manual a lo automático)
-
-Para conectarte al servidor puedes seguir una progresión de tres niveles, donde cada uno mejora la comodidad del anterior:
+Existen dos formas de conectarte al servidor. Elige la que mejor se adapte a tu situación:
 
 ---
 
-### 2.1 Nivel 1: Conexión manual por terminal (Básico)
+### Método 1: Conexión directa por Terminal (Universal — Para computadores de la U o cualquier equipo)
 
-Es la forma directa de conectarte sin configurar nada previo en tu equipo:
+Este método funciona en cualquier computador (laboratorios de la U, PC prestado o tu laptop) sin necesidad de instalar ni configurar nada previo.
 
-#### 1. Si estás dentro de la U (conectado a Wi-Fi UCN o Eduroam):
-Te conectas directamente al servidor interno:
+Abre la **Terminal** (en macOS/Linux) o **PowerShell** (en Windows) y ejecuta el comando según dónde estés:
+
+#### Caso A: Si estás dentro de la U (Laboratorio de computación o Wi-Fi UCN)
+Te conectas directamente a la máquina interna:
 
 ```bash
 ssh <tu_usuario>@172.16.23.243
 ```
-*(Ingresas tu contraseña de usuario del servidor).*
+*(Ejemplo: `ssh gael.ortega@172.16.23.243`).*
 
-#### 2. Si estás fuera de la U (desde tu casa o internet móvil):
-Te conectas al servidor puente:
+1. Si es tu primera vez conectándote desde ese equipo, te preguntará: `Are you sure you want to continue connecting (yes/no)?`. Escribe **`yes`** y presiona Enter.
+2. Ingresa tu contraseña de alumno asignada para el servidor.
+3. ¡Listo! Verás la bienvenida de Ubuntu en la máquina de cómputo (`usuario@enterprise:~$`).
+
+#### Caso B: Si estás fuera de la U (Desde tu casa o internet móvil)
+Debes pasar por el servidor puente usando el puerto `22280`:
 
 ```bash
 ssh puente@146.83.128.60 -p 22280
 ```
 
-1. Ingresas la clave del puente.
+1. Ingresa la contraseña del usuario `puente`.
 2. El servidor puente iniciará la conexión con la máquina interna (*"Conectando con la VM interna... Bienvenido"*).
-3. Ingresas tu usuario y contraseña de alumno para entrar directamente a tu sesión.
+3. Ingresa tu usuario y contraseña personal de alumno.
+4. ¡Listo! Estarás dentro de tu sesión en el servidor.
 
 ---
 
-### 2.2 Nivel 2: Automatizar la conexión en tu computador (Recomendado)
+### Método 2: Conexión visual con VS Code Remote (Recomendado para tu Computador Personal)
 
-Para no escribir la dirección IP, puertos ni claves del puente cada vez que quieras conectarte, puedes guardar la configuración de `servidor-ucn` en tu archivo local `~/.ssh/config`.
+Si estás trabajando en tu **propio notebook o computador de casa**, puedes usar la extensión **Remote - SSH** de VS Code para explorar carpetas, editar archivos en vivo y descargar resultados con clic derecho.
 
-#### En macOS y Linux (Ubuntu):
+#### Paso 1: Configurar el atajo en tu computador (Se hace una sola vez)
 
-Tienes dos opciones según cómo prefieras gestionar la contraseña:
-
-* **Opción A (Recomendada con `ProxyJump` nativo de OpenSSH):**
-  1. Edita tu archivo `~/.ssh/config`:
-     ```bash
-     nano ~/.ssh/config
+* **En Windows (PowerShell):**
+  1. Crea la carpeta de configuración:
+     ```powershell
+     New-Item -ItemType Directory -Force $HOME\.ssh
      ```
-  2. Pega la regla estándar:
-     ```text
+
+  2. Crea el archivo `config`:
+     ```powershell
+     New-Item -ItemType File -Force $HOME\.ssh\config
+     ```
+
+  3. Escribe la configuración:
+     ```powershell
+     @"
      Host servidor-puente
          HostName 146.83.128.60
          Port 22280
@@ -104,128 +114,105 @@ Tienes dos opciones según cómo prefieras gestionar la contraseña:
          Port 22
          User <tu_usuario>
          ProxyJump servidor-puente
+     "@ | Set-Content $HOME\.ssh\config
      ```
 
-* **Opción B (Automática sin escribir clave del puente con `sshpass`):**
-  1. En macOS: `brew install hudochenkov/sshpass/sshpass` / En Ubuntu: `sudo apt install sshpass`
-  2. En `~/.ssh/config`:
+     *(Reemplaza `<tu_usuario>` por tu usuario de alumno, por ejemplo `gael.ortega`).*
+
+  4. Comprueba que el archivo se creó correctamente:
+     ```powershell
+     Get-Content $HOME\.ssh\config
+     ```
+
+  5. Comprueba que SSH reconoce la configuración:
+     ```powershell
+     ssh -G servidor-ucn
+     ```
+
+     Deberías encontrar valores similares a:
      ```text
-     Host servidor-ucn
-         HostName 172.16.23.243
-         User <tu_usuario>
-         Port 22
-         ProxyCommand sshpass -p '<clave_del_puente>' ssh -p 22280 -W %h:%p puente@146.83.128.60
+     user <tu_usuario>
+     hostname 172.16.23.243
+     port 22
+     proxyjump servidor-puente
      ```
 
-#### En Windows (PowerShell):
+  6. Conéctate al servidor:
+     ```powershell
+     ssh servidor-ucn
+     ```
 
-En Windows, OpenSSH viene integrado nativamente.
+* **En macOS o Linux (Terminal):**
+  1. Abre tu terminal y edita el archivo:
+     ```bash
+     mkdir -p ~/.ssh
+     nano ~/.ssh/config
+     ```
+  2. Pega la misma configuración de arriba (reemplazando `<tu_usuario>`).
+  3. Guarda con `Ctrl + O`, presiona **Enter** y sal con `Ctrl + X`.
 
-1. Abre el archivo de configuración en tu carpeta de usuario:
-   ```powershell
-   notepad C:\Users\$env:USERNAME\.ssh\config
-   ```
-2. Agrega la regla usando `ProxyJump` nativo:
-   ```text
-   Host servidor-puente
-       HostName 146.83.128.60
-       Port 22280
-       User puente
-
-   Host servidor-ucn
-       HostName 172.16.23.243
-       Port 22
-       User <tu_usuario>
-       ProxyJump servidor-puente
-   ```
-
-#### Cómo usarlo:
-Una vez guardada esta configuración, ya no necesitas recordar IPs ni puertos. Desde cualquier terminal en tu computador solo escribes:
-
-```bash
-ssh servidor-ucn
-```
-
----
-
-### 2.3 Nivel 3: Conexión visual con VS Code Remote - SSH
-
-> **Requisito previo:** Para usar esta función es necesario haber completado el **Nivel 2 (Sección 2.2)**, ya que la extensión de VS Code lee automáticamente los datos de tu archivo `~/.ssh/config` para establecer la conexión.
-
-Si prefieres ver las carpetas y archivos del servidor directamente en la interfaz gráfica de VS Code:
-
-1. En el VS Code de tu computador, instala la extensión oficial **Remote - SSH** (de Microsoft).
+#### Paso 2: Conectarte desde VS Code
+1. Abre **VS Code** en tu computador e instala la extensión **Remote - SSH** (de Microsoft).
 2. Presiona `Ctrl+Shift+P` (o `Cmd+Shift+P` en Mac) y escribe:
    ```text
    Remote-SSH: Connect to Host...
    ```
-3. Selecciona `servidor-ucn` (aparecerá en la lista gracias a la configuración del paso anterior).
-4. Se abrirá una ventana de VS Code conectada directamente al servidor remoto. Puedes abrir tu carpeta de trabajo con **File → Open Folder**.
+3. Selecciona **`servidor-ucn`**.
+4. Ingresa la contraseña del puente (`puente`) y luego tu contraseña personal de alumno.
+5. Se abrirá una ventana conectada al servidor. Ve a **File → Open Folder** y selecciona tu carpeta `/home/<tu_usuario>`.
+6. Para abrir la terminal integrada dentro del servidor, usa el atajo ``Ctrl + ` `` o el menú **Terminal → New Terminal**.
 
 ---
 
-## 3. Gestión de Entornos con Conda (Sin `sudo`)
+## 3. Gestión de Entornos con Conda (En el Servidor)
 
-En el servidor de cómputo no tienes permisos de administrador (`sudo`), por lo que utilizas **Conda** para instalar paquetes de Python de forma aislada dentro de tu carpeta personal.
+En el servidor de cómputo no tienes permisos de administrador (`sudo`), por lo que usamos **Conda** para crear entornos aislados e instalar las librerías necesarias para cada laboratorio.
 
-### 3.1 Comprobar Conda
-Una vez dentro del servidor, comprueba si Conda está activo:
+> [!NOTE]
+> **Recordatorio:** todos los comandos de esta sección se ejecutan **dentro de la terminal del servidor** (ya sea que te hayas conectado por el Método 1 o por el Método 2).
+
+---
+
+### 3.1 Comprobar si Conda está activo
+Escribe en la terminal del servidor:
 
 ```bash
 conda --version
 ```
 
-Si te dice `command not found`, activa el entorno base con:
+Si te sale `command not found`, activa el acceso a Conda ejecutando:
 
 ```bash
-source ~/miniconda3/bin/activate
-# o bien
 source ~/.bashrc
 ```
 
 ---
 
-### 3.2 Crear el entorno del laboratorio con `environment.yml`
+### 3.2 Crear el entorno del laboratorio (Se hace 1 sola vez por lab)
 
-Para que todo el grupo tenga exactamente las mismas versiones de librerías, los laboratorios entregan un archivo `environment.yml` (por ejemplo, en el **Lab 01**):
+Cada laboratorio incluye un archivo llamado `environment.yml` con la lista de librerías requeridas (como NumPy, Pandas, Scikit-Learn).
 
-```yaml
-name: lab01-ml-2026-02
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - python=3.11
-  - pip
-  - numpy
-  - pandas
-  - matplotlib
-  - scikit-learn
-  - joblib
-  - pip:
-    - opencv-python-headless
-    - streamlit
-```
-
-Para crear el entorno completo en el servidor a partir de este archivo, ejecuta:
+Para crear el entorno automáticamente, entra a la carpeta de tu laboratorio y ejecuta:
 
 ```bash
 conda env create -f environment.yml
 ```
 
-*(Esto descargará e instalará todas las librerías automáticamente en tu carpeta personal sin pedir `sudo`).*
+*(Conda descargará e instalará todas las herramientas necesarias de forma automática en tu cuenta personal).*
 
 ---
 
-### 3.3 Activar y desactivar el entorno
+### 3.3 Activar el entorno para trabajar
 
-* **Para activar:**
-  ```bash
-  conda activate lab01-ml-2026-02
-  ```
-  *(Verás que la terminal cambia su inicio a `(lab01-ml-2026-02) usuario@servidor:~$`)*.
+Cada vez que vayas a trabajar o correr código, debes activar el entorno correspondiente:
 
-* **Para desactivar cuando termines:**
+```bash
+conda activate lab01-ml-2026-02
+```
+
+*(Notarás que el inicio de tu terminal cambia para mostrar el entorno activo: `(lab01-ml-2026-02) usuario@enterprise:~$`).*
+
+* **Para salir del entorno cuando termines:**
   ```bash
   conda deactivate
   ```
@@ -234,178 +221,182 @@ conda env create -f environment.yml
 
 ### 3.4 Comandos útiles de Conda
 
-| Comando | Acción |
+| Comando | ¿Para qué sirve? |
 | :--- | :--- |
-| `conda env list` | Ver todos los entornos creados en tu cuenta |
-| `conda list` | Ver todas las librerías instaladas en el entorno activo |
-| `conda env remove -n mi-entorno` | Borrar un entorno que ya no uses |
+| `conda activate <nombre>` | Activar un entorno de trabajo |
+| `conda deactivate` | Desactivar el entorno actual |
+| `conda env list` | Ver la lista de todos tus entornos creados |
+| `conda list` | Ver qué librerías están instaladas en el entorno actual |
+| `conda env remove -n <nombre>` | Borrar un entorno que ya no uses para liberar espacio |
 
 ---
 
-## 4. Ejecutar el código del laboratorio en el servidor
+## 4. Ejecutar tu código y aplicaciones
 
-Siguiendo el flujo de trabajo:
+Siguiendo el flujo del curso, una vez dentro del servidor:
 
-### 1. Descargar o actualizar tu código en el servidor
-Entra a la carpeta de tu repositorio y descarga los últimos cambios que hiciste desde tu computador:
-
+### 4.1 Actualizar tu código desde GitHub
 ```bash
 cd ~/mi-laboratorio
 git pull
 ```
 
-### 2. Activar el entorno y entrenar
+### 4.2 Activar el entorno y entrenar tu modelo
 ```bash
 conda activate lab01-ml-2026-02
-
-# Ejecutar el script principal de entrenamiento:
-python main.py --dataset-dir "data/"
+python main.py
 ```
-
-El script procesará los datos, entrenará los clasificadores y guardará los resultados en la carpeta `artifacts/`.
+*(El script entrenará los clasificadores y guardará los gráficos y modelos resultantes en la carpeta `artifacts/`).*
 
 ---
 
-### 3. Ejecutar aplicaciones visuales (Streamlit)
+### 4.3 Ejecutar aplicaciones visuales (Streamlit)
 
-Si el laboratorio incluye una interfaz visual con Streamlit (por ejemplo `main_visual.py` o `app.py`):
+Si el laboratorio incluye una interfaz interactiva en Streamlit (ej. `app.py` o `main_visual.py`):
 
 ```bash
-streamlit run main_visual.py
+streamlit run app.py
 ```
 
-Al ejecutarlo, Streamlit indicará que está corriendo en el puerto local: `http://localhost:8501`.
+* **Si estás usando VS Code Remote (Método 2):** VS Code detectará automáticamente la aplicación y te mostrará una notificación abajo a la derecha: *"Open in Browser"*. Haz clic en ese botón y se abrirá en tu navegador.
+* **Para detener la aplicación:** Presiona `Ctrl + C` en la terminal.
 
-#### Cómo ver la aplicación en el navegador de tu computador:
-* **Si usas VS Code Remote:** VS Code detecta automáticamente que se abrió el puerto 8501 y te mostrará una notificación: *"Open in Browser"*. Haz clic y se abrirá directamente en tu navegador.
-* **Si usas terminal directa:** Puedes hacer un túnel SSH agregando el reenvío de puertos `-L 8501:localhost:8501` al conectarte:
+---
+
+## 5. Descargar tus resultados a tu Computador
+
+> [!IMPORTANT]
+> **Los modelos pesados (`.joblib`, `.pkl`) y datasets grandes nunca se suben a GitHub.** Para tenerlos en tu computador y agregarlos a tu informe, descárgalos usando la opción correspondiente a cómo te conectaste:
+
+---
+
+### 5.1 Si te conectaste por Terminal Directa (Método 1 — Ej. en computadores de la U):
+Puedes usar el comando `scp` (*Secure Copy*) desde una **terminal local de tu computador** (no dentro de la sesión del servidor):
+
+1. Abre una nueva ventana de terminal en el computador donde estás sentado.
+2. Ejecuta según tu ubicación:
+
+* **Si estás en la U (conectado a Wi-Fi UCN o lab):**
   ```bash
-  ssh -L 8501:localhost:8501 servidor-ucn
+  # Para descargar un archivo específico (ej: una figura generada):
+  scp <tu_usuario>@172.16.23.243:~/mi-laboratorio/artifacts/matriz_confusion.png .
+
+  # Para descargar toda la carpeta artifacts completa:
+  scp -r <tu_usuario>@172.16.23.243:~/mi-laboratorio/artifacts ./artifacts
   ```
-  Luego abres `http://localhost:8501` en tu computador.
+
+* **Si estás en tu casa o fuera de la U:**
+  * **Con el atajo `servidor-ucn` (Recomendado):**
+    ```bash
+    # Para descargar un archivo específico:
+    scp servidor-ucn:~/mi-laboratorio/artifacts/matriz_confusion.png .
+
+    # Para descargar toda la carpeta artifacts completa:
+    scp -r servidor-ucn:~/mi-laboratorio/artifacts ./artifacts
+    ```
+
+  * **Con la IP directa del puente (si no tienes el archivo config):**
+    ```bash
+    # Para descargar un archivo específico:
+    scp -J puente@146.83.128.60:22280 <tu_usuario>@172.16.23.243:~/mi-laboratorio/artifacts/matriz_confusion.png .
+
+    # Para descargar toda la carpeta artifacts completa:
+    scp -r -J puente@146.83.128.60:22280 <tu_usuario>@172.16.23.243:~/mi-laboratorio/artifacts ./artifacts
+    ```
+*(Ingresas tus contraseñas y los archivos se descargarán directamente a la carpeta donde abriste la terminal).*
 
 ---
 
-## 5. Descargar artefactos y mover archivos (Dos formas)
+### 5.2 Si te conectaste con VS Code Remote (Método 2):
+Esta es la forma visual si estás trabajando en tu laptop personal:
+1. En el panel izquierdo de VS Code (**Explorador de archivos**), abre tu carpeta de trabajo.
+2. Busca la carpeta `artifacts/` o el archivo que quieras descargar (por ejemplo `confusion_matrix.png` o `modelo.joblib`).
+3. Haz **clic derecho** sobre él y selecciona **Download...** (Descargar).
+4. Elige dónde guardarlo en tu computador.
 
-Nota: **Los datasets grandes y los modelos binarios (`.pkl`, `.joblib`, `.parquet`) no se suben a GitHub.** Para mover tus figuras, reportes, modelos o datasets entre el servidor y tu computador/nube tienes dos opciones:
-
----
-
-### Opción A: Directo con VS Code Remote (Visual)
-
-Si estás conectado al servidor mediante la extensión **Remote - SSH** de VS Code:
-
-* **Para descargar archivos o carpetas a tu computador:**
-  1. En el panel izquierdo de VS Code (Explorador de archivos), busca el archivo o la carpeta generada (ej: `artifacts/` o `reporte.pdf`).
-  2. Haz clic derecho sobre él y selecciona **Download...** (Descargar).
-  3. Elige dónde guardarlo en tu computador.
-
-* **Para subir datasets o archivos al servidor:**
-  1. Abre la carpeta de destino en el explorador de VS Code.
-  2. Arrastra el archivo desde tu explorador de Windows o Finder de Mac y suéltalo dentro de la ventana de VS Code.
-
----
-
-### Opción B: A la nube con Google Drive y `rclone` (Para respaldos grandes)
-
-Si necesitas respaldar datasets grandes o dejar tus modelos en Google Drive:
-
-#### 5.1 Instalar `rclone` en tu cuenta del servidor (Sin `sudo`)
-
-Pega este bloque en la terminal del servidor:
-
-```bash
-mkdir -p ~/.local/bin
-cd /tmp
-curl -L -o rclone.zip https://downloads.rclone.org/rclone-current-linux-amd64.zip
-unzip -o rclone.zip
-cp rclone-*-linux-amd64/rclone ~/.local/bin/
-chmod +x ~/.local/bin/rclone
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
+```text
+Explorador de VS Code Remote
+└── mi-laboratorio/
+    ├── src/
+    ├── artifacts/
+    │   ├── modelo.joblib        ──> [Clic derecho → Download...] ──> Se guarda en tu PC
+    │   └── matriz_confusion.png ──> [Clic derecho → Download...] ──> Se guarda en tu PC
+    └── main.py
 ```
 
-Comprueba la instalación con:
-
-```bash
-rclone version
-```
+*(También puedes subir archivos o datasets al servidor simplemente arrastrándolos desde tu explorador de Windows o Mac hacia el panel de VS Code Remote).*
 
 ---
 
-#### 5.2 Configurar tu Google Drive institucional
+## 6. Errores frecuentes y soluciones rápidas
 
-En el servidor:
-
-```bash
-rclone config
-```
-
-1. Escribe `n` para crear un *New remote*.
-2. Nombre: `gdrive`
-3. Tipo de almacenamiento: escribe `drive` (o el número correspondiente a Google Drive).
-4. Deja en blanco *Client ID* y *Client Secret* (presiona **Enter** dos veces).
-5. Alcance (*Scope*): elige `1` (acceso completo a Drive).
-6. Deja en blanco el *root_folder_id* y *service_account* (presiona **Enter**).
-7. En *Edit advanced config*: escribe `n` (No).
-8. En *Use auto config*: escribe `n` (No, porque el servidor no tiene navegador gráfico).
-9. Te pedirá ejecutar un comando en tu computador personal para autorizar la cuenta institucional de Google. Sigue las instrucciones que aparecen en pantalla.
-10. Confirma con `y` y sal con `q`.
-
----
-
-#### 5.3 Comandos frecuentes de `rclone`
-
-```bash
-# 1. Ver qué carpetas tienes en tu Drive:
-rclone ls gdrive: --max-depth 1
-
-# 2. Respaldar la carpeta artifacts generada por el entrenamiento a tu Drive:
-rclone copy ./artifacts gdrive:ML-Laboratorios/Lab01/artifacts -P
-
-# 3. Descargar un dataset pesado desde Drive al servidor:
-rclone copy gdrive:Datasets/datos.zip ./data/ -P
-```
-
-> **Importante:** Usa siempre `rclone copy` y evita `rclone sync`. `copy` solo copia archivos nuevos sin borrar nada en el destino; `sync` puede eliminar archivos en Drive si no están en el servidor.
-
----
-
-## 6. Errores frecuentes y soluciones
-
-| Error / Síntoma | Causa | Solución |
+| Síntoma / Error | Causa habitual | Solución |
 | :--- | :--- | :--- |
-| `Connection timed out` al hacer `ssh` | Estás intentando entrar a la IP interna (`172.16.23.243`) desde tu casa sin pasar por el puente. | Usa la conexión a través del servidor puente o la regla en `~/.ssh/config`. |
-| `conda: command not found` | El PATH de Conda no se cargó al iniciar la sesión. | Ejecuta `source ~/.bashrc` o `source ~/miniconda3/bin/activate`. |
-| `Port 8501 is already in use` en Streamlit | Otro proceso está usando el puerto por defecto. | Lanza Streamlit en otro puerto: `streamlit run main_visual.py --server.port 8505`. |
-| `ModuleNotFoundError` al correr scripts | No activaste el entorno Conda correcto. | Ejecuta `conda activate <nombre-del-entorno>` antes de ejecutar tu script. |
+| `Connection timed out` al hacer SSH | Estás intentando entrar a la IP interna (`172.16.23.243`) desde tu casa sin pasar por el puente. | Desde tu casa conéctate a `puente@146.83.128.60 -p 22280` o usa el atajo `servidor-ucn`. |
+| `Permission denied (publickey,password)` | El usuario o la contraseña se ingresaron incorrectamente. | Verifica que tu usuario esté bien escrito (ej: `nombre.apellido`) y vuelve a escribir la clave con cuidado. |
+| `Could not resolve hostname servidor-ucn` | El archivo `config` en tu PC no existe o se guardó como `config.txt`. | En PowerShell ejecuta `Rename-Item $HOME\.ssh\config.txt config`. |
+| `conda: command not found` | No se cargó la configuración de Conda al iniciar sesión. | Ejecuta `source ~/.bashrc` en la terminal del servidor. |
+| `ModuleNotFoundError: No module named 'sklearn'` | Estás ejecutando el script sin activar el entorno del lab. | Ejecuta `conda activate <nombre-del-entorno>` antes de correr tu script. |
+| `Port 8501 is already in use` al correr Streamlit | Otro proceso dejó ocupado el puerto por defecto. | Corre Streamlit en otro puerto: `streamlit run app.py --server.port 8505`. |
 
 ---
 
-## 7. Referencia rápida
+## 7. Referencia rápida (Cheatsheet)
 
+### Flujo habitual en la universidad (Lab de computación):
 ```bash
-# Conectarte al servidor (con ~/.ssh/config configurado)
-ssh servidor-ucn
+# 1. Conectarte directo
+ssh <tu_usuario>@172.16.23.243
 
-# Actualizar el código que subiste desde tu PC
+# 2. Ir a tu carpeta y actualizar código
 cd ~/mi-laboratorio
 git pull
 
-# Activar el entorno Conda
+# 3. Activar entorno y ejecutar
 conda activate lab01-ml-2026-02
-
-# Ejecutar entrenamiento
 python main.py
 
-# Ejecutar visualización
-streamlit run main_visual.py
-
-# Subir artefactos pesados a Google Drive
-rclone copy ./artifacts gdrive:ML-Laboratorios/Lab01/artifacts -P
-
-# Desactivar entorno y salir del servidor
+# 4. Salir
 conda deactivate
 exit
 ```
+
+### Flujo habitual desde tu casa (Terminal directa):
+```bash
+# 1. Conectarte por el puente
+ssh puente@146.83.128.60 -p 22280
+
+# 2. Seguir los mismos pasos de trabajo (git pull, conda activate, python main.py)
+```
+
+---
+
+## 8. Opciones avanzadas (Opcional)
+
+<details>
+<summary><b>Haz clic aquí si quieres configurar acceso sin contraseñas en tu computador personal</b></summary>
+
+### Conexión 100% directa sin contraseñas (Claves SSH)
+Si estás en tu computador personal de confianza y no quieres ingresar contraseñas cada vez que te conectes:
+
+1. **En tu computador personal**, genera tu par de claves SSH:
+   ```bash
+   ssh-keygen -t ed25519
+   ```
+   *(Presiona **Enter** tres veces para aceptar las opciones por defecto).*
+
+2. **Autoriza tu clave pública en ambas máquinas:**
+   * **En Windows (PowerShell):**
+     ```powershell
+     type $HOME\.ssh\id_ed25519.pub | ssh -p 22280 puente@146.83.128.60 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+     type $HOME\.ssh\id_ed25519.pub | ssh servidor-ucn "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+     ```
+   * **En macOS y Linux:**
+     ```bash
+     ssh-copy-id -p 22280 puente@146.83.128.60
+     ssh-copy-id servidor-ucn
+     ```
+
+A partir de este momento, tanto `ssh servidor-ucn` como VS Code Remote se conectarán al instante sin solicitar contraseñas.
+
+</details>
