@@ -374,29 +374,68 @@ ssh puente@146.83.128.60 -p 22280
 ## 8. Opciones avanzadas (Opcional)
 
 <details>
-<summary><b>Haz clic aquí si quieres configurar acceso sin contraseñas en tu computador personal</b></summary>
+<summary><b>Haz clic aquí si quieres configurar acceso 100% automático sin contraseñas</b></summary>
 
-### Conexión 100% directa sin contraseñas (Claves SSH)
-Si estás en tu computador personal de confianza y no quieres ingresar contraseñas cada vez que te conectes:
+### Conexión 100% directa sin contraseñas (Claves SSH y Automatización)
+Si estás en tu computador personal de confianza y quieres conectarte en 1 solo paso sin tener que escribir nunca más contraseñas personales ni la del puente:
 
-1. **En tu computador personal**, genera tu par de claves SSH:
-   ```bash
-   ssh-keygen -t ed25519
-   ```
-   *(Presiona **Enter** tres veces para aceptar las opciones por defecto).*
+> [!NOTE]
+> **Requisito previo:** asegúrate de haber configurado tu archivo `config` con el atajo `servidor-ucn` siguiendo el **Paso 1 del Método 2** (más arriba en esta guía).
 
-2. **Autoriza tu clave pública en ambas máquinas:**
-   * **En Windows (PowerShell):**
+#### Paso 1: Generar tu par de claves SSH en tu computador
+```bash
+ssh-keygen -t ed25519
+```
+*(Presiona **Enter** tres veces para aceptar las opciones por defecto).*
+
+#### Paso 2: Autorizar tu clave pública en tu cuenta de cómputo (`servidor-ucn`)
+* **En Windows (PowerShell):**
+  ```powershell
+  Get-Content $HOME\.ssh\id_ed25519.pub | ssh servidor-ucn "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+  ```
+
+* **En macOS y Linux (Terminal):**
+  ```bash
+  ssh-copy-id servidor-ucn
+  ```
+
+*(Te pedirá las contraseñas una última vez para registrar la clave pública).*
+
+---
+
+#### Paso 3: Automatizar la contraseña del servidor puente
+
+Para que el sistema responda automáticamente la clave genérica del puente en segundo plano:
+
+* **En Windows (PowerShell):**
+  1. Crea el script asistente de contraseña:
      ```powershell
-     type $HOME\.ssh\id_ed25519.pub | ssh -p 22280 puente@146.83.128.60 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
-     type $HOME\.ssh\id_ed25519.pub | ssh servidor-ucn "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+     Set-Content -Path "$HOME\.ssh\askpass.cmd" -Value '@echo <clave_del_puente>'
      ```
-   * **En macOS y Linux:**
-     ```bash
-     ssh-copy-id -p 22280 puente@146.83.128.60
-     ssh-copy-id servidor-ucn
+     *(Reemplaza `<clave_del_puente>` por la clave asignada para el usuario `puente`)*.
+
+  2. Activa la variable de entorno en tu usuario de Windows:
+     ```powershell
+     [Environment]::SetEnvironmentVariable("SSH_ASKPASS", "$HOME\.ssh\askpass.cmd", "User")
+     [Environment]::SetEnvironmentVariable("SSH_ASKPASS_REQUIRE", "force", "User")
+     $env:SSH_ASKPASS = "$HOME\.ssh\askpass.cmd"
+     $env:SSH_ASKPASS_REQUIRE = "force"
      ```
 
-A partir de este momento, tanto `ssh servidor-ucn` como VS Code Remote se conectarán al instante sin solicitar contraseñas.
+* **En macOS y Linux (Terminal):**
+  1. Instala `sshpass` (en macOS: `brew install hudochenkov/sshpass/sshpass` o en Ubuntu: `sudo apt install sshpass`).
+  2. En tu archivo `~/.ssh/config`, actualiza la entrada `servidor-ucn` para usar `ProxyCommand`:
+     ```ssh
+     Host servidor-ucn
+         HostName 172.16.23.243
+         Port 22
+         User <tu_usuario>
+         IdentityFile ~/.ssh/id_ed25519
+         ProxyCommand sshpass -p '<clave_del_puente>' ssh -p 22280 -W %h:%p puente@146.83.128.60
+     ```
+
+---
+
+¡Listo! A partir de este momento, tanto `ssh servidor-ucn` como **VS Code Remote** se conectarán directamente en 1 clic sin solicitar ninguna contraseña.
 
 </details>
