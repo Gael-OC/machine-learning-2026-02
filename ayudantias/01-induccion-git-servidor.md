@@ -20,6 +20,7 @@ Tu PC  --push-->  GitHub  --pull-->  Servidor UCN
 4. Clonar el mismo repo, identificarte y hacer un `push` desde allá.
 5. En el servidor: un Python que carga un poco de CPU y RAM, y verlo en `htop`.
 6. En el PC: `git pull` y ver el archivo que subiste desde el servidor.
+7. **Si quedan ~10 min:** Conda en el servidor (`conda --version`, un entorno chico). Si no, queda en la [Guía 02](../guias/02-servidor-conda.md).
 
 ---
 
@@ -212,7 +213,37 @@ Debería aparecer `demo_carga.py`. El ciclo quedó cerrado: escribes en un lado,
 
 ---
 
-## 6. Si algo falla
+## 6. Conda (si alcanza)
+
+En el servidor **no hay `sudo`**. Los labs se corren en un entorno Conda, no con el `python3` del sistema.
+
+```bash
+conda --version
+```
+
+Si sale `command not found`:
+
+```bash
+source ~/.bashrc
+conda --version
+```
+
+Un entorno de prueba (en los labs vendrá un `environment.yml` y esto no se hace a mano):
+
+```bash
+conda create -n demo python=3.11 -y
+conda activate demo
+python --version
+conda deactivate
+```
+
+`conda create` tarda un par de minutos. Si el reloj no da, córtalo acá: ya vieron que Conda existe. Borrar el demo: `conda env remove -n demo`.
+
+Detalle (`environment.yml`, `tmux`, VS Code Remote) → **[Guía 02](../guias/02-servidor-conda.md)**.
+
+---
+
+## 7. Si algo falla
 
 | Síntoma | Qué probar |
 | --- | --- |
@@ -222,13 +253,14 @@ Debería aparecer `demo_carga.py`. El ciclo quedó cerrado: escribes en un lado,
 | Ventana **Connect to GitHub** | Es lo normal. Inicia sesión en el navegador |
 | `Connection timed out` a `172.16.23.243` | Estás fuera de la U: usa el puente |
 | `Permission denied` al `push` | Clonaste el repo de otra persona. Hoy: clona **el tuyo**. En labs: [fork](../guias/01-git-y-github.md) |
-| `python: command not found` | En el servidor: `python3 demo_carga.py` |
+| `python: command not found` | En el servidor: `python3 demo_carga.py`. Con el entorno: `conda activate demo` y ahí sí `python` |
+| `conda: command not found` | `source ~/.bashrc` |
 | `htop: command not found` | Usa `top` (salir con `q`) |
 | `nano` no sale | `Ctrl+X`. Si pide guardar: `Y`, Enter |
 
 ---
 
-## 7. Para profundizar
+## 8. Para profundizar
 
 | Quieres… | Guía |
 | --- | --- |

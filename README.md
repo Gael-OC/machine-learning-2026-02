@@ -43,7 +43,7 @@ Documentación transversal para la configuración de herramientas y nivelación 
 El material de cada ayudantía resume lo que se trabaja en la sesión. El detalle queda en las guías de consulta.
 
 * **Ayudantía 01 — Inducción: Git, GitHub y Servidor** — [Ver sesión](./ayudantias/01-induccion-git-servidor.md)
-  Instalar Git, repo en GitHub, SSH al servidor, `push`/`pull` y un demo en `htop`. Conda, `tmux` y fork de labs: en las guías.
+  Instalar Git, repo en GitHub, SSH al servidor, `push`/`pull` y un demo en `htop`. Conda al final si alcanza. `tmux` y fork de labs: en las guías.
 
 ---
 
