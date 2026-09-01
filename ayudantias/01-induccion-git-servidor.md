@@ -215,9 +215,9 @@ Debería aparecer `demo_carga.py`. El ciclo quedó cerrado: escribes en un lado,
 
 ## 6. Conda
 
-**Conda** crea entornos: cada lab tiene su propio Python y librerías, sin mezclarse con el sistema ni con otros labs.
+En el servidor hay un Python del sistema (`python3`) y **Conda**. Conda arma un **entorno**: una carpeta con su propio Python y librerías. Cada lab usa el suyo, así no se pisan entre sí.
 
-Todo esto en el **servidor**:
+Sigue en el **servidor**.
 
 ```bash
 conda --version
@@ -230,29 +230,64 @@ source ~/.bashrc
 conda --version
 ```
 
-### Crear un entorno e instalar
+### Crear el entorno
 
 ```bash
 conda create -n demo python=3.11 -y
 conda activate demo
+```
+
+El prompt cambia a `(demo) ...`. Mientras esté así, usa `python` (no `python3`).
+
+```bash
 python --version
+```
+
+### Un script que usa NumPy
+
+```bash
+cd ~/labs/induccion-ml
+nano suma.py
+```
+
+Pega esto, `Ctrl+O` + Enter, `Ctrl+X`:
+
+```python
+import numpy as np
+
+a = np.array([1, 2, 3])
+print("Suma:", a.sum())
+```
+
+```bash
+python suma.py
+```
+
+Va a fallar (`No module named 'numpy'`): el entorno está vacío. Instala e inténtalo de nuevo:
+
+```bash
 conda install numpy -y
-python -c "import numpy; print(numpy.__version__)"
+python suma.py
+```
+
+Ahora imprime `Suma: 6`.
+
+```bash
 conda deactivate
 ```
 
-Con el entorno activo, el prompt empieza con `(demo)` y el comando es `python` (no `python3`).
+Se fue el `(demo)` del prompt. Sin activar el entorno, ese `suma.py` otra vez no encuentra NumPy.
 
 ### `environment.yml`
 
-En los labs el profesor deja un archivo `environment.yml` con las librerías. En vez de instalar a mano:
+En los labs no vas a instalar librería por librería. El profesor deja un archivo `environment.yml` y tú creas el entorno de una:
 
 ```bash
 conda env create -f environment.yml
 conda activate lab01-ml-2026-02
 ```
 
-Hoy no hay uno en el repo de inducción. Ejemplo de cómo se ve:
+Así se ve el archivo (hoy no hace falta crearlo):
 
 ```yaml
 name: lab01-ml-2026-02
@@ -286,7 +321,8 @@ Más (VS Code Remote, `tmux`) → **[Guía 02](../guias/02-servidor-conda.md)**.
 | Ventana **Connect to GitHub** | Es lo normal. Inicia sesión en el navegador |
 | `Connection timed out` a `172.16.23.243` | Estás fuera de la U: usa el puente |
 | `Permission denied` al `push` | Clonaste el repo de otra persona. Hoy: clona **el tuyo**. En labs: [fork](../guias/01-git-y-github.md) |
-| `python: command not found` | En el servidor: `python3 demo_carga.py`. Con el entorno: `conda activate demo` y ahí sí `python` |
+| `python: command not found` | En el servidor sin Conda: `python3`. Con el entorno activo (`conda activate demo`): `python` |
+| `No module named 'numpy'` | `conda activate demo` y después `conda install numpy -y` |
 | `conda: command not found` | `source ~/.bashrc` |
 | `htop: command not found` | Usa `top` (salir con `q`) |
 | `nano` no sale | `Ctrl+X`. Si pide guardar: `Y`, Enter |
