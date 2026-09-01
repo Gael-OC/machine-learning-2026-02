@@ -84,6 +84,7 @@ Al primer `push` aparece **Connect to GitHub**. Elige **Sign in with your browse
 | --- | --- |
 | **En la U** | `ssh <tu_usuario>@172.16.23.243` |
 | **Fuera de la U** | `ssh puente@146.83.128.60 -p 22280` y después tu usuario de alumno |
+| **Contraseña** | kjj89aB..
 
 Usuario tipo `nombre.apellido`. La primera vez responde `yes` al fingerprint.
 
