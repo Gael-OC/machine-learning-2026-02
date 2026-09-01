@@ -215,7 +215,9 @@ Debería aparecer `demo_carga.py`. El ciclo quedó cerrado: escribes en un lado,
 
 ## 6. Conda
 
-En el servidor hay un Python del sistema (`python3`) y **Conda**. Conda arma un **entorno**: una carpeta con su propio Python y librerías. Cada lab usa el suyo, así no se pisan entre sí.
+**Conda** instala Python y librerías (NumPy, Pandas, scikit-learn) en el servidor. No se instalan “en el computador”: se instalan en un **entorno**, una carpeta aislada con las versiones de ese lab.
+
+Sin entornos, el Lab 1 y el Lab 2 se pelearían por la misma versión de una librería. Con Conda, cada lab tiene la suya. En los labs el profesor deja un `environment.yml` y todos quedan con lo mismo.
 
 Sigue en el **servidor**.
 
@@ -237,7 +239,7 @@ conda create -n demo python=3.11 -y
 conda activate demo
 ```
 
-El prompt cambia a `(demo) ...`. Mientras esté así, usa `python` (no `python3`).
+Al activar, al inicio de la línea aparece `(demo)`. Eso significa que estás **dentro** del entorno. Mientras esté `(demo)`, usa `python` (no `python3`).
 
 ```bash
 python --version
@@ -272,11 +274,13 @@ python suma.py
 
 Ahora imprime `Suma: 6`.
 
+Para salir del entorno:
+
 ```bash
 conda deactivate
 ```
 
-Se fue el `(demo)` del prompt. Sin activar el entorno, ese `suma.py` otra vez no encuentra NumPy.
+Desaparece el `(demo)` del inicio de la línea: ya no estás en ese entorno. Si corres `python suma.py` otra vez, vuelve el error de NumPy. Hay que hacer `conda activate demo` cada vez que quieras usarlo.
 
 ### `environment.yml`
 
