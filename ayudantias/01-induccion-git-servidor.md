@@ -1,6 +1,6 @@
 # Ayudantía 01 — Git, GitHub y Servidor UCN
 
-> **Objetivo:** instalar Git, subir un repo a GitHub, entrar al servidor y hacer el mismo ciclo allá.
+> **Objetivo:** instalar Git, subir un repo a GitHub, entrar al servidor, hacer el mismo ciclo allá y usar Conda.
 >
 > Esto se hace **en vivo**. El detalle está en las guías:
 > [00 Git básico](../guias/00-git-basico.md) · [01 Git y GitHub](../guias/01-git-y-github.md) · [02 Servidor y Conda](../guias/02-servidor-conda.md)
@@ -20,7 +20,7 @@ Tu PC  --push-->  GitHub  --pull-->  Servidor UCN
 4. Clonar el mismo repo, identificarte y hacer un `push` desde allá.
 5. En el servidor: un Python que carga un poco de CPU y RAM, y verlo en `htop`.
 6. En el PC: `git pull` y ver el archivo que subiste desde el servidor.
-7. **Si quedan ~10 min:** Conda en el servidor (`conda --version`, un entorno chico). Si no, queda en la [Guía 02](../guias/02-servidor-conda.md).
+7. Conda en el servidor: crear un entorno, instalar un paquete y usar un `environment.yml`.
 
 ---
 
@@ -213,9 +213,11 @@ Debería aparecer `demo_carga.py`. El ciclo quedó cerrado: escribes en un lado,
 
 ---
 
-## 6. Conda (si alcanza)
+## 6. Conda
 
-En el servidor **no hay `sudo`**. Los labs se corren en un entorno Conda, no con el `python3` del sistema.
+**Conda** crea entornos: cada lab tiene su propio Python y librerías, sin mezclarse con el sistema ni con otros labs.
+
+Todo esto en el **servidor**:
 
 ```bash
 conda --version
@@ -228,18 +230,49 @@ source ~/.bashrc
 conda --version
 ```
 
-Un entorno de prueba (en los labs vendrá un `environment.yml` y esto no se hace a mano):
+### Crear un entorno e instalar
 
 ```bash
 conda create -n demo python=3.11 -y
 conda activate demo
 python --version
+conda install numpy -y
+python -c "import numpy; print(numpy.__version__)"
 conda deactivate
 ```
 
-`conda create` tarda un par de minutos. Si el reloj no da, córtalo acá: ya vieron que Conda existe. Borrar el demo: `conda env remove -n demo`.
+Con el entorno activo, el prompt empieza con `(demo)` y el comando es `python` (no `python3`).
 
-Detalle (`environment.yml`, `tmux`, VS Code Remote) → **[Guía 02](../guias/02-servidor-conda.md)**.
+### `environment.yml`
+
+En los labs el profesor deja un archivo `environment.yml` con las librerías. En vez de instalar a mano:
+
+```bash
+conda env create -f environment.yml
+conda activate lab01-ml-2026-02
+```
+
+Hoy no hay uno en el repo de inducción. Ejemplo de cómo se ve:
+
+```yaml
+name: lab01-ml-2026-02
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scikit-learn
+```
+
+| Comando | Para qué |
+| --- | --- |
+| `conda activate demo` | entrar al entorno |
+| `conda deactivate` | salir |
+| `conda env list` | ver tus entornos |
+| `conda env remove -n demo` | borrar el de prueba |
+
+Más (VS Code Remote, `tmux`) → **[Guía 02](../guias/02-servidor-conda.md)**.
 
 ---
 
