@@ -311,7 +311,7 @@ Tabla de contingencia que cruza los valores reales con las predicciones del mode
 * **Error Porcentual Absoluto Medio (MAPE):** Mide el error promedio en términos relativos porcentuales respecto al valor real (muy utilizado en pronóstico de demanda y reportes de gestión):
   $$\text{MAPE} = \frac{100\%}{N} \sum_{i=1}^N \left| \frac{y^{(i)} - \hat{y}^{(i)}}{y^{(i)}} \right|$$
 
-* **Mean Bias Deviation (MBD):** Evalúa si el modelo presenta una tendencia sistemática a sobreestimar (MBD $> 0$) o subestimar (MBD $< 0$):
+* **Mean Bias Deviation (MBD):** Evalúa si el modelo presenta una tendencia sistemática a subestimar (MBD $> 0$, porque $y > \hat{y}$) o sobreestimar (MBD $< 0$):
   $$\text{MBD} = \frac{1}{N} \sum_{i=1}^N (y^{(i)} - \hat{y}^{(i)})$$
 
 ---

@@ -1,7 +1,7 @@
 # Machine Learning — Repositorio de Ayudantías
 
 ![Python](https://img.shields.io/badge/Python-3.11-204a87?style=flat-square&logo=python&logoColor=white)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-0.24+-f39c12?style=flat-square&logo=scikit-learn&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.x-f39c12?style=flat-square&logo=scikit-learn&logoColor=white)
 ![UCN](https://img.shields.io/badge/UCN-Coquimbo-003366?style=flat-square)
 
 Espacio centralizado de recursos técnicos, guías de inducción y código fuente para las sesiones prácticas de Machine Learning en la Universidad Católica del Norte (Sede Coquimbo).
@@ -40,10 +40,11 @@ Documentación transversal para la configuración de herramientas y nivelación 
 
 ### Registro Semanal de Sesiones
 
-El material correspondiente a cada ayudantía se incorporará a medida que se desarrollen las clases prácticas:
+El material de cada ayudantía resume lo que se trabaja en la sesión. El detalle queda en las guías de consulta.
 
-* **Ayudantía 01:** *Pendiente de publicación*
+* **Ayudantía 01 — Inducción: Git, GitHub y Servidor** — [Ver sesión](./ayudantias/01-induccion-git-servidor.md)
+  Instalar Git, repo en GitHub, SSH al servidor, `push`/`pull` y un demo en `htop`. Conda, `tmux` y fork de labs: en las guías.
 
 ---
 
-> **Nota de uso:** Este repositorio está concebido como material de lectura y descarga de recursos. No requiere clonación ni gestión de forks.
+> **Nota de uso:** Este repositorio es material de consulta. Puedes leerlo en GitHub o clonarlo para tener las guías en local. Los laboratorios del profesor se trabajan con **fork** ([Guía 01](./guias/01-git-y-github.md)), no haciendo fork de este repo.

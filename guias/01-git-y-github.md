@@ -20,55 +20,112 @@ flowchart LR
 
 ---
 
-## 1. Autenticación con GitHub (Token de acceso)
+## 1. Conectarte a GitHub (HTTPS)
 
-Cuando usas GitHub desde la terminal con enlaces HTTPS (`https://github.com/...`), tu contraseña normal de inicio de sesión no funciona por motivos de seguridad. En su lugar, debes generar un **Personal Access Token (PAT)** que sirve como contraseña para la terminal.
+En el curso usamos URLs **HTTPS** (`https://github.com/usuario/repo.git`).
 
-### 1.1 Crear tu Token en GitHub (Se hace una sola vez)
+* **Bajar** un repositorio público (`git clone`) no pide cuenta.
+* **Subir** cambios (`git push`) o usar un repo **privado** sí pide identificarte. La contraseña de la web de GitHub **no funciona** en la terminal.
 
-1. Entra a [GitHub.com](https://github.com/) e inicia sesión en el navegador.
-2. Haz clic en tu foto de perfil (arriba a la derecha) → **Settings**.
-3. Baja hasta el final del menú izquierdo y haz clic en **Developer settings (o Credentials)**.
-4. Selecciona **Personal access tokens** → **Tokens (classic)**.
-5. Haz clic en **Generate new token** → **Generate new token (classic)**.
-6. En **Note**, escribe un nombre que recuerdes (ej: `servidor-ucn` o `mi-laptop`).
-7. En **Expiration**, elige el tiempo de duración que prefieras (ej. 90 días o Sin expiración).
-8. Marca la casilla **`repo`** (esto da permisos para subir y bajar código).
-9. Haz clic en el botón verde **Generate token** al final de la página.
-10. **Copia el token inmediatamente.** *(GitHub solo te lo mostrará esta vez. Guárdalo en un bloc de notas seguro).*
+Elige según dónde estés trabajando:
 
-> **Tip para no escribir el Token cada vez:**
-> Ejecuta este comando en tu terminal una sola vez:
-> ```bash
-> git config --global credential.helper store
-> ```
-> Con esto, Git recordará tu usuario y token después de la primera vez que lo ingreses, y no te lo volverá a pedir.
-> *(Nota de seguridad: este comando guarda el token en texto plano en `~/.git-credentials`. Es ideal para tu computador personal o tu cuenta privada en el servidor, pero si compartes cuenta en un equipo de acceso público, usa autenticación mediante llaves SSH).*
+| Dónde | Cómo identificarte (una vez) |
+| :--- | :--- |
+| **Tu computador** (Windows, macOS o Linux) | Ventana **Connect to GitHub** → iniciar sesión en el navegador |
+| **Servidor UCN** | Personal Access Token (se pega cuando la terminal pide *Password*) |
+
+---
+
+### 1.1 En tu computador (Windows, macOS, Linux)
+
+1. Clona el repositorio o entra a la carpeta del proyecto.
+2. Cuando subas por primera vez (`git push`), Git abre **Connect to GitHub**.
+3. Elige **Sign in with your browser**, inicia sesión en GitHub y autoriza el acceso (incluye 2FA si lo tienes).
+4. Vuelve a la terminal: el `push` debería terminar solo. La sesión queda guardada en el sistema (Windows Credential Manager, llavero de macOS, o el almacén de Linux).
+
+No hace falta crear un token en el computador personal si esa ventana aparece.
+
+| Sistema | Qué esperar |
+| :--- | :--- |
+| **Windows** | Git for Windows trae Git Credential Manager. Al primer `push` abre el navegador. |
+| **macOS** | Igual, con Git reciente. Si no abre nada: `brew install --cask git-credential-manager`. |
+| **Linux** | Puede abrir el navegador (si hay GCM) o pedir usuario y token en la terminal. En ese caso usa la sección 1.2. |
+
+Si la ventana ofrece pegar un **Token** en vez del navegador, también sirve (sección 1.2).
+
+---
+
+### 1.2 En el servidor UCN (token)
+
+En el servidor no conviene depender del navegador. Se crea un **Personal Access Token** desde tu computador, en [github.com](https://github.com/):
+
+1. Foto de perfil → **Settings**.
+2. Al final del menú izquierdo: **Developer settings** (en algunas cuentas aparece **Credentials**).
+3. **Personal access tokens** → **Tokens (classic)**.
+4. **Generate new token** → **Generate new token (classic)**.
+5. **Note:** un nombre (ej. `servidor-ucn`).
+6. **Expiration:** 90 días o la que prefieras.
+7. Marca la casilla **`repo`**.
+8. **Generate token** y cópialo de inmediato (GitHub no lo vuelve a mostrar).
+
+En la terminal del servidor, cuando Git pida credenciales:
+
+* **Username:** tu usuario de GitHub.
+* **Password:** el token (no la contraseña de la web).
+
+Para no pegarlo en cada `push`:
+
+```bash
+git config --global credential.helper store
+```
+
+Git guardará usuario y token en `~/.git-credentials` (solo en **tu** home del servidor). No uses este comando en un computador compartido del laboratorio.
+
+El mismo token sirve si en tu PC Linux te pide usuario/contraseña en vez de abrir el navegador.
+
+---
+
+### 1.3 Si el `push` sigue fallando
+
+* No eres dueño del repo y nadie te agregó en **Settings → Collaborators**.
+* En Windows, borra credenciales viejas: Panel de control → Administrador de credenciales → entradas de `github.com`.
+* El token expiró o se pegó con un espacio → genera uno nuevo.
 
 ---
 
 ## 2. Empezar a trabajar con un repositorio
 
-Hay dos situaciones comunes al iniciar un laboratorio:
+Los repos del curso son **públicos**: clonar no pide cuenta. Subir cambios (`git push`) sí pide identificarte (sección 1).
 
 ---
 
-### Opción A: Clonar un laboratorio ya existente
-Si el profesor o tu equipo ya crearon el repositorio:
+### Opción A: Fork del laboratorio del profesor *(lo habitual en el curso)*
 
-1. Entra al repositorio en GitHub.
-2. Haz clic en el botón verde **<> Code** y copia el enlace **HTTPS** (`https://github.com/usuario/nombre-laboratorio.git`).
-3. En tu terminal escribe:
+El profesor publica un repo con el código a medias. Ese repo **no es tuyo**: si lo clonas, `git push` falla.
+
+1. Entra al repositorio del profesor en GitHub.
+2. Arriba a la derecha: **Fork** → **Create fork**. En grupo, **un solo fork** (el de un integrante).
+3. Clona **tu fork** (mira que la URL tenga *tu* usuario, no el del profesor):
 
 ```bash
-git clone https://github.com/usuario/nombre-laboratorio.git
+git clone https://github.com/tu-usuario/nombre-laboratorio.git
 cd nombre-laboratorio
+```
+
+4. En grupo: en **tu fork**, **Settings → Collaborators → Add people**.
+
+Si el profesor actualiza el original y quieres esos cambios:
+
+```bash
+git remote add upstream https://github.com/profe/nombre-laboratorio.git   # una vez
+git fetch upstream
+git merge upstream/main
 ```
 
 ---
 
-### Opción B: Crear un proyecto nuevo desde cero *(El camino más fácil)*
-La forma más sencilla de empezar un proyecto nuevo es crearlo primero en la web de GitHub y luego clonarlo en tu equipo:
+### Opción B: Crear un proyecto nuevo desde cero *(inducción o repo propio)*
+La forma más sencilla es crearlo primero en GitHub y luego clonarlo:
 
 1. En GitHub, haz clic en el botón **New** (o [github.com/new](https://github.com/new)).
 2. Escribe el nombre del repositorio (ej: `laboratorio-01-ml`).
@@ -88,7 +145,7 @@ cd laboratorio-01-ml
 
 ---
 
-## 4. El flujo de trabajo diario
+## 3. El flujo de trabajo diario
 
 Este es el ciclo que usarás en todas las sesiones de laboratorio:
 
@@ -106,26 +163,25 @@ flowchart TD
 3. **`git status`**: Revisas qué archivos modificaste.
 4. **`git add archivo.py`**: Preparas los archivos que quieres guardar.
 5. **`git commit -m "Descripción clara"`**: Guardas una versión con un mensaje descriptivo.
-6. **`git push`**: Envías tus avances a GitHub.
+6. **`git push`**: Sube tus commits a GitHub. La primera vez en esa máquina te pedirá identificarte (sección 1).
 
 ---
 
-## 5. Trabajo en equipo (Grupos de 2 a 3 personas)
+## 4. Trabajo en equipo (Grupos de 2 a 3 personas)
 
-### 5.1 Invitar a tus compañeros al repositorio
-1. Un integrante del grupo crea el repositorio en GitHub.
-2. Va a la pestaña **Settings** del repositorio → menú izquierdo **Collaborators**.
-3. Clic en **Add people** y busca a sus compañeros por usuario de GitHub o correo.
-4. Los compañeros aceptan la invitación que les llega al correo o entrando al enlace del repositorio.
+### 4.1 Invitar a tus compañeros al repositorio
+1. Un integrante hace el **fork** (opción A) o crea el repo.
+2. En **ese** repo: **Settings → Collaborators → Add people**.
+3. Los compañeros aceptan la invitación (correo o el enlace del repo).
 
-### 5.2 Reglas para evitar problemas
+### 4.2 Reglas para evitar problemas
 * **Regla #1:** Haz `git pull` **siempre** antes de empezar a escribir código.
 * **Regla #2:** Modularicen su código en archivos `.py` dentro de una carpeta `src/` (por ejemplo `src/preprocessing.py`, `src/models.py`).
 * **Regla #3 con Notebooks (`.ipynb`):** No editen el mismo notebook al mismo tiempo. Los archivos `.ipynb` son difíciles de mezclar si dos personas tocan la misma celda. Limpien las salidas (*Clear All Outputs*) antes de hacer commit.
 
 ---
 
-## 6. Resolver un conflicto simple
+## 5. Resolver un conflicto simple
 
 Un conflicto ocurre si dos personas modificaron la misma línea de un archivo y Git no sabe cuál conservar.
 
@@ -157,11 +213,11 @@ El cambio que subió tu compañero
 
 ---
 
-## 7. LazyGit (Opcional)
+## 6. LazyGit (Opcional)
 
 LazyGit es una interfaz visual dentro de la terminal que te permite hacer `add`, `commit` y `push` presionando teclas sencillas.
 
-### 7.1 Instalar en el servidor Ubuntu (sin `sudo`)
+### 6.1 Instalar en el servidor Ubuntu (sin `sudo`)
 ```bash
 mkdir -p ~/.local/bin
 cd /tmp
@@ -173,7 +229,7 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 7.2 Usar LazyGit
+### 6.2 Usar LazyGit
 Entra a tu repositorio y ejecuta:
 
 ```bash
@@ -188,7 +244,7 @@ lazygit
 
 ---
 
-## 8. Datasets y resultados grandes
+## 7. Datasets y resultados grandes
 
 **GitHub no está hecho para guardar datos gigantes ni modelos pesados.**
 
@@ -199,22 +255,25 @@ Para mover datasets o descargar los modelos y figuras generadas en el servidor a
 
 ---
 
-## 9. Errores frecuentes
+## 8. Errores frecuentes
 
 | Error | Causa | Solución |
 | :--- | :--- | :--- |
 | `fatal: not a git repository` | Estás fuera de la carpeta del proyecto. | Usa `cd nombre-carpeta` para entrar al repo. |
-| `Authentication failed` | El token expiró o se copió con espacios. | Genera un nuevo Token en GitHub con permiso `repo`. |
+| `Authentication failed` | No hay sesión, el token expiró o se copió con espacios. | En el PC: inicia sesión en la ventana **Connect to GitHub**. En el servidor: token nuevo con permiso `repo`. |
+| Aparece **Connect to GitHub** al hacer `push` | Git Credential Manager pide iniciar sesión. Es lo esperado. | **Sign in with your browser**. No es un error. |
 | `rejected (non-fast-forward)` | Hay cambios en GitHub que no tienes en tu máquina. | Ejecuta `git pull` antes de hacer `push`. |
+| `Permission denied` / no puedes hacer `push` | Clonaste el repo del profesor, no tu fork. | Haz fork, clona **tu** URL, o agrega `git remote set-url origin https://github.com/tu-usuario/repo.git`. |
 
 ---
 
-## 10. Referencia rápida
+## 9. Referencia rápida
 
 | Comando | Para qué sirve |
 | --- | --- |
-| `git clone https://github.com/...` | Descargar un repositorio a tu máquina |
-| `git pull` | Descargar e integrar los cambios de GitHub |
+| `git clone https://github.com/...` | Descargar un repositorio. En labs: clona **tu fork**, no el del profesor |
+| `git pull` | Descargar e integrar los cambios de GitHub (privado: con sesión) |
+| `git push` | Subir commits; **siempre** pide estar autenticado |
 | `git status` | Ver qué archivos has modificado |
 | `git add archivo` | Preparar un archivo para guardar |
 | `git commit -m "mensaje"` | Guardar una nueva versión en el historial |

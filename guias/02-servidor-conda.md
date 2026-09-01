@@ -236,6 +236,9 @@ conda activate lab01-ml-2026-02
 Siguiendo el flujo del curso, una vez dentro del servidor:
 
 ### 4.1 Actualizar tu código desde GitHub
+
+Clona **tu fork** (no el repo del profesor). Detalle en la **[Guía 01](./01-git-y-github.md)**.
+
 ```bash
 cd ~/mi-laboratorio
 git pull
@@ -250,7 +253,43 @@ python main.py
 
 ---
 
-### 4.3 Ejecutar aplicaciones visuales (Streamlit)
+### 4.3 Dejar un entrenamiento corriendo con `tmux`
+
+Si el script tarda mucho, **no lo ejecutes en la terminal normal**. Si se cae el Wi-Fi, cierras el notebook o se corta el SSH, el proceso muere.
+
+`tmux` crea una sesión en el servidor que sigue viva aunque te desconectes.
+
+```bash
+# Crear (o entrar a) una sesión llamada lab
+tmux new -s lab
+```
+
+Dentro de esa sesión activas el entorno y lanzas el entrenamiento:
+
+```bash
+conda activate lab01-ml-2026-02
+python main.py
+```
+
+| Acción | Cómo |
+| :--- | :--- |
+| **Salir sin matar el proceso** | `Ctrl + B`, suelta, luego `D` (*detach*) |
+| **Volver a la sesión** | `tmux attach -t lab` |
+| **Ver sesiones abiertas** | `tmux ls` |
+| **Cerrar la sesión** (cuando ya terminó) | `exit` dentro de tmux, o `tmux kill-session -t lab` |
+
+Puedes desconectarte del servidor (`exit` del SSH) y el entrenamiento sigue. Al reconectarte:
+
+```bash
+ssh servidor-ucn
+tmux attach -t lab
+```
+
+> Si al hacer `attach` te dice que no hay sesión, el proceso ya terminó o la sesión se llama distinto. Revisa con `tmux ls`.
+
+---
+
+### 4.4 Ejecutar aplicaciones visuales (Streamlit)
 
 Si el laboratorio incluye una interfaz interactiva en Streamlit (ej. `app.py` o `main_visual.py`):
 
@@ -338,6 +377,7 @@ Explorador de VS Code Remote
 | `conda: command not found` | No se cargó la configuración de Conda al iniciar sesión. | Ejecuta `source ~/.bashrc` en la terminal del servidor. |
 | `ModuleNotFoundError: No module named 'sklearn'` | Estás ejecutando el script sin activar el entorno del lab. | Ejecuta `conda activate <nombre-del-entorno>` antes de correr tu script. |
 | `Port 8501 is already in use` al correr Streamlit | Otro proceso dejó ocupado el puerto por defecto. | Corre Streamlit en otro puerto: `streamlit run app.py --server.port 8505`. |
+| Se cortó el SSH y el entrenamiento se detuvo | El proceso corría en la terminal normal, no en `tmux`. | Lanza entrenamientos largos con `tmux new -s lab` y sal con `Ctrl+B` y luego `D`. |
 
 ---
 
@@ -352,7 +392,7 @@ ssh <tu_usuario>@172.16.23.243
 cd ~/mi-laboratorio
 git pull
 
-# 3. Activar entorno y ejecutar
+# 3. Activar entorno y ejecutar (si tarda, usa tmux: tmux new -s lab)
 conda activate lab01-ml-2026-02
 python main.py
 
@@ -367,6 +407,14 @@ exit
 ssh puente@146.83.128.60 -p 22280
 
 # 2. Seguir los mismos pasos de trabajo (git pull, conda activate, python main.py)
+```
+
+### Entrenamiento largo (para que no se corte al desconectarte):
+```bash
+tmux new -s lab          # crear sesión
+# ... conda activate y python main.py ...
+# Ctrl+B, luego D        # salir sin matar el proceso
+tmux attach -t lab       # volver después
 ```
 
 ---

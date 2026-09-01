@@ -353,10 +353,12 @@ En proyectos de Machine Learning hay archivos que normalmente no deberían forma
 
 - entornos virtuales,
 - claves y secretos,
-- datasets grandes,
+- datasets grandes (carpeta `data/`),
 - modelos entrenados,
 - resultados pesados,
 - archivos temporales.
+
+Un CSV pequeño de ejemplo (por ejemplo en `notebooks/` o `src/`) sí se puede versionar. Lo que no se sube es la carpeta `data/` con datasets completos.
 
 Crea un archivo llamado exactamente:
 
@@ -381,14 +383,15 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 
-# Datos y resultados pesados
-*.csv
+# Datos y resultados pesados (los CSV de ejemplo fuera de data/ sí se versionan)
 *.parquet
 *.pkl
 *.joblib
-data/
+data/*
+!data/.gitkeep
 outputs/
-artifacts/
+artifacts/*
+!artifacts/.gitkeep
 ```
 
 Si quieres que las carpetas vacías aparezcan en el repositorio, puedes usar un archivo `.gitkeep`:
