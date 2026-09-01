@@ -25,7 +25,7 @@ flowchart LR
 En el curso usamos URLs **HTTPS** (`https://github.com/usuario/repo.git`).
 
 * **Bajar** un repositorio público (`git clone`) no pide cuenta.
-* **Subir** cambios (`git push`) o usar un repo **privado** sí pide identificarte. La contraseña de la web de GitHub **no funciona** en la terminal.
+* **Subir** cambios (`git push`) sí pide identificarte. La contraseña de la web de GitHub **no funciona** en la terminal. Los repos del curso son públicos.
 
 Elige según dónde estés trabajando:
 
@@ -272,7 +272,7 @@ Para mover datasets o descargar los modelos y figuras generadas en el servidor a
 | Comando | Para qué sirve |
 | --- | --- |
 | `git clone https://github.com/...` | Descargar un repositorio. En labs: clona **tu fork**, no el del profesor |
-| `git pull` | Descargar e integrar los cambios de GitHub (privado: con sesión) |
+| `git pull` | Descargar e integrar los cambios de GitHub |
 | `git push` | Subir commits; **siempre** pide estar autenticado |
 | `git status` | Ver qué archivos has modificado |
 | `git add archivo` | Preparar un archivo para guardar |

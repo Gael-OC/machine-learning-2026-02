@@ -25,7 +25,7 @@ Documentación transversal para la configuración de herramientas y nivelación 
   Fundamentos de control de versiones, commits, ramas, .gitignore y flujo de trabajo local con Git.
 
 * **[01] Git y Github** — [Ver guía](./guias/01-git-y-github.md)
-  Conexión con GitHub, repositorios remotos, push, pull, autenticación, trabajo colaborativo y herramientas como LazyGit.
+  Conexión con GitHub, fork de los labs del profesor, push, pull, autenticación y trabajo colaborativo.
 
 * **[02] Servidor y Entornos Conda** — [Ver guía](./guias/02-servidor-conda.md)
   Conexión remota por SSH, gestión de ambientes reproducibles y VS Code Remote.

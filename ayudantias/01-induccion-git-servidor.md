@@ -20,7 +20,7 @@ Tu PC  --push-->  GitHub  --pull-->  Servidor UCN
 4. Clonar el mismo repo, identificarte y hacer un `push` desde allá.
 5. En el servidor: un Python que carga un poco de CPU y RAM, y verlo en `htop`.
 6. En el PC: `git pull` y ver el archivo que subiste desde el servidor.
-7. Conda en el servidor: crear un entorno, instalar un paquete y usar un `environment.yml`.
+7. Conda en el servidor: crear un entorno, instalar NumPy y ver cómo se usa un `environment.yml`.
 
 ---
 
@@ -114,7 +114,7 @@ cd labs
 ls
 ```
 
-Atajo SSH, VS Code Remote, `tmux` y Conda → **[Guía 02](../guias/02-servidor-conda.md)**.
+Atajo SSH, VS Code Remote y `tmux` → **[Guía 02](../guias/02-servidor-conda.md)**. Conda es la sección 6.
 
 ---
 
@@ -137,7 +137,7 @@ git clone https://github.com/usuario/induccion-ml.git
 cd induccion-ml
 ```
 
-Cuando pida credenciales:
+El `clone` de un repo público no pide cuenta. El `push` sí. Cuando pida credenciales:
 
 * **Username:** tu usuario de GitHub.
 * **Password:** el token (no la contraseña de la web).
@@ -284,7 +284,7 @@ Desaparece el `(demo)` del inicio de la línea: ya no estás en ese entorno. Si 
 
 ### `environment.yml`
 
-En los labs no vas a instalar librería por librería. El profesor deja un archivo `environment.yml` y tú creas el entorno de una:
+En los labs no vas a instalar librería por librería. El profesor deja un archivo `environment.yml` y tú creas el entorno con las librerías:
 
 ```bash
 conda env create -f environment.yml
