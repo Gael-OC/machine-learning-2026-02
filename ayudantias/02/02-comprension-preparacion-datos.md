@@ -307,7 +307,7 @@ Son rápidos e independientes del modelo que se utilizará después. Sin embargo
 
 La elección de la medida depende de la naturaleza de los datos:
 
-| Tipo de atributo | Tipo de objetivo | Herramienta de esta ayudantía |
+| Atributo | Objetivo | Método |
 | --- | --- | --- |
 | Categórico | Categórico | Prueba $\chi^2$ |
 | Numérico | Numérico | Correlación de Pearson |
@@ -370,9 +370,9 @@ La fórmula combina:
 - El signo de los productos entre esas desviaciones.
 - La escala total de variación de ambas variables.
 
-Para ordenar los cálculos a mano puede utilizarse una tabla auxiliar:
+Para ordenar los cálculos a mano, define $d_{x,i}=x_i-\bar{x}$ y $d_{y,i}=y_i-\bar{y}$. Así la tabla auxiliar se mantiene compacta:
 
-| $x_i$ | $y_i$ | $x_i-\bar{x}$ | $y_i-\bar{y}$ | Producto | Cuadrado de $x$ | Cuadrado de $y$ |
+| $x_i$ | $y_i$ | $d_{x,i}$ | $d_{y,i}$ | $d_{x,i}d_{y,i}$ | $d_{x,i}^2$ | $d_{y,i}^2$ |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 |  |  |  |  |  |  |  |
 
@@ -426,24 +426,7 @@ Antes de dar una respuesta por terminada, revisa:
 
 ---
 
-## 11. Ruta sugerida para 90 minutos
-
-| Tiempo | Trabajo |
-| ---: | --- |
-| 0–8 min | Presentar el recorrido general y trabajar CRISP-DM |
-| 8–18 min | Explorar el código de Pandas |
-| 18–30 min | Relacionar Requests, HTTP, HTML y BeautifulSoup |
-| 30–40 min | Construir la expresión regular por partes |
-| 40–60 min | Desarrollar el ejercicio de $\chi^2$ |
-| 60–78 min | Desarrollar el ejercicio de Pearson |
-| 78–88 min | Diseñar el mini-pipeline |
-| 88–90 min | Cierre y dudas pendientes |
-
-La prioridad no es alcanzar rápidamente el resultado, sino que cada grupo pueda explicar por qué eligió su procedimiento.
-
----
-
-## 12. Checklist de aprendizaje
+## 11. Checklist de aprendizaje
 
 - [ ] Puedo explicar qué es un CSV y qué representa un `DataFrame`.
 - [ ] Reconozco las seis fases de CRISP-DM.
