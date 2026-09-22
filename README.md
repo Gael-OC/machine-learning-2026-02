@@ -42,8 +42,11 @@ Documentación transversal para la configuración de herramientas y nivelación 
 
 El material de cada ayudantía resume lo que se trabaja en la sesión. El detalle queda en las guías de consulta.
 
-* **Ayudantía 01 — Inducción: Git, GitHub y Servidor** — [Ver sesión](./ayudantias/01-induccion-git-servidor.md)
+* **Ayudantía 01 — Inducción: Git, GitHub y Servidor** — [Ver sesión](./ayudantias/01/01-induccion-git-servidor.md)
   Instalar Git, repo en GitHub, SSH al servidor, `push`/`pull`, demo en `htop` y Conda. `tmux` y fork de labs: en las guías.
+
+* **Ayudantía 02 — Comprensión y preparación de datos** — [Ver sesión](./ayudantias/02/02-comprension-preparacion-datos.md)
+  CRISP-DM, exploración con Pandas, obtención de datos web, expresiones regulares y selección de características con $\chi^2$ y Pearson.
 
 ---
 
