@@ -48,7 +48,7 @@ El material de cada ayudantía resume lo que se trabaja en la sesión. El detall
 * **Ayudantía 02 — Comprensión y preparación de datos** — [Ver sesión](./ayudantias/02/02-comprension-preparacion-datos.md)
   CRISP-DM, exploración con Pandas, obtención de datos web, expresiones regulares y selección de características con $\chi^2$ y Pearson.
 
-* **Ayudantía 03 — Preparación Prueba 1** — [Ver ejercicios (PDF)](./ayudantias/03/Ayudanti%CC%81a_03_ML.pdf)
+* **Ayudantía 03 — Preparación Prueba 1** — [Ver ejercicios (PDF)](./ayudantias/03/Ayudantía_03_ML.pdf)
   Repaso conceptual y práctico de comprensión, visualización, preparación y selección de datos.
 
 ---
