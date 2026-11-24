@@ -102,14 +102,9 @@ Si $q$ tiene largo uno, su valor propio nos dice cuánta varianza obtenemos al p
 
 Si juntamos las coordenadas en la columna $z=X_cv$, su media es cero, porque las columnas de $X_c$ suman cero. Su varianza muestral se puede escribir así.
 
-```math
-\mathrm{Var}(z)
-=\frac{\sum_i z_i^2}{n-1}
-=\frac{z^\top z}{n-1}
-=\frac{(X_cv)^\top(X_cv)}{n-1}
-=v^\top\left(\frac{X_c^\top X_c}{n-1}\right)v
-=v^\top Sv.
-```
+$\mathrm{Var}(z)=\frac{\sum_i z_i^2}{n-1}=\frac{z^\top z}{n-1}$\
+$=\frac{(X_cv)^\top(X_cv)}{n-1}$\
+$=v^\top\left(\frac{X_c^\top X_c}{n-1}\right)v=v^\top Sv$.
 
 Si tomamos $v=q$ con largo uno, la varianza proyectada es $q^\top Sq=\lambda q^\top q=\lambda$.
 
@@ -117,12 +112,8 @@ Una matriz real simétrica como $S$ tiene una base de vectores propios ortogonal
 
 Al calcular $v^\top Sv$, los términos cruzados desaparecen porque $q_1^\top q_2=0$.
 
-```math
-\mathrm{Var}(X_cv)
-=c_1^2\lambda_1+c_2^2\lambda_2
-\le c_1^2\lambda_1+c_2^2\lambda_1
-=\lambda_1.
-```
+$\mathrm{Var}(X_cv)=c_1^2\lambda_1+c_2^2\lambda_2$\
+$\le c_1^2\lambda_1+c_2^2\lambda_1=\lambda_1$.
 
 La cota se alcanza tomando $v=q_1$, con $c_1=1$ y $c_2=0$. Por eso la primera componente principal, PC1, usa la dirección del mayor valor propio.
 
@@ -459,29 +450,17 @@ En estas dos cuentas omitimos el subíndice $i$ para poder leer mejor las expres
 
 **Sigmoide.** Escribimos $p=(1+\exp(-a))^{-1}$. Al derivar la potencia $-1$, aparece $-(1+\exp(-a))^{-2}$. Al derivar la función de adentro, aparece $-\exp(-a)$. Los dos signos negativos se cancelan.
 
-```math
-\begin{aligned}
-\frac{dp}{da}
-&=-(1+\exp(-a))^{-2}[-\exp(-a)]\\
-&=\frac{\exp(-a)}{(1+\exp(-a))^2}\\
-&=\frac{1}{1+\exp(-a)}\cdot\frac{\exp(-a)}{1+\exp(-a)}
-=p(1-p).
-\end{aligned}
-```
+$\frac{dp}{da}=-(1+\exp(-a))^{-2}[-\exp(-a)]$\
+$=\frac{\exp(-a)}{(1+\exp(-a))^2}$\
+$=\frac{1}{1+\exp(-a)}\cdot\frac{\exp(-a)}{1+\exp(-a)}=p(1-p)$.
 
 El segundo factor es $1-p$ porque $1-1/(1+\exp(-a))=\exp(-a)/(1+\exp(-a))$.
 
 **Pérdida.** La etiqueta $y$ queda fija. La derivada de $\ln p$ es $1/p$. En $\ln(1-p)$ aparece además un $-1$ al derivar $1-p$.
 
-```math
-\begin{aligned}
-\frac{d\ell}{dp}
-&=-\left[y\frac{1}{p}+(1-y)\frac{-1}{1-p}\right]\\
-&=-\frac{y}{p}+\frac{1-y}{1-p}\\
-&=\frac{-y(1-p)+(1-y)p}{p(1-p)}
-=\frac{p-y}{p(1-p)}.
-\end{aligned}
-```
+$\frac{d\ell}{dp}=-\left[y\frac{1}{p}+(1-y)\frac{-1}{1-p}\right]$\
+$=-\frac{y}{p}+\frac{1-y}{1-p}$\
+$=\frac{-y(1-p)+(1-y)p}{p(1-p)}=\frac{p-y}{p(1-p)}$.
 
 En el numerador, $-y+yp+p-yp=p-y$.
 
@@ -748,24 +727,15 @@ Para la primera flor, `probabilidades[0]` da $0{,}1502$ para setosa y $0{,}8498$
 
 Las cuatro entradas de `pca.components_[0]` son los coeficientes de la primera dirección. Para verificar su proyección usamos los números que imprime el código con cinco decimales.
 
-```math
-\begin{aligned}
-z_1 &\approx (-0{,}90386)(0{,}48539)+(-1{,}40881)(-0{,}37775)\\
-    &\quad +(0{,}30505)(0{,}56138)+(0{,}38346)(0{,}55366)
-    \approx 0{,}4770.
-\end{aligned}
-```
+$z_1\approx (-0{,}90386)(0{,}48539)+(-1{,}40881)(-0{,}37775)$\
+$+(0{,}30505)(0{,}56138)+(0{,}38346)(0{,}55366)\approx 0{,}4770$.
 
 La segunda coordenada se obtiene del mismo modo con `pca.components_[1]`. El signo de una dirección de PCA puede invertirse junto con el de su coordenada. Si el clasificador se ajusta sobre esa coordenada invertida, puede compensar el cambio con el signo del peso correspondiente.
 
 **3. Calcular el puntaje y aplicar la sigmoide.** Usamos la misma idea del ejercicio 3 con dos pesos, uno por componente. `clasificador.coef_[0]` contiene los pesos y `clasificador.intercept_[0]` contiene el intercepto.
 
-```math
-\begin{aligned}
-a &= w_1\,\mathrm{PC1}+w_2\,\mathrm{PC2}+b\\
-  &\approx (2{,}4449)(0{,}4770)+(-0{,}2330)(-1{,}6274)+0{,}1877.
-\end{aligned}
-```
+$a=w_1\mathrm{PC1}+w_2\mathrm{PC2}+b$\
+$\approx (2{,}4449)(0{,}4770)+(-0{,}2330)(-1{,}6274)+0{,}1877$.
 
 Con los valores completos se obtiene $a\approx1{,}7332$ y $\sigma(a)\approx0{,}8498$ para la clase 1. Su complemento, $1-\sigma(a)\approx0{,}1502$, corresponde a la clase 0. `np.round` redondea lo que se imprime. El cálculo usa todos los decimales disponibles.
 
