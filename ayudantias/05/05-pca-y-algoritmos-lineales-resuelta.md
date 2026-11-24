@@ -17,20 +17,20 @@ Esta guía acompaña la ayudantía de preparación de Machine Learning de la UCN
 
 Imagina cuatro puntos dibujados en un plano. Cada punto tiene dos coordenadas. Si elegimos una recta y proyectamos los puntos sobre ella, basta una coordenada para ubicar cada proyección. **PCA elige la dirección en la que esas proyecciones quedan más esparcidas.** La medida de esa dispersión se llama **varianza**.
 
-$$
+```math
 X=\begin{pmatrix}1&1\\2&0\\4&4\\5&3\end{pmatrix}.
-$$
+```
 
-Cada fila es un punto y cada columna es una característica medida en la misma unidad y escala. Vamos a centrar los datos, medir cómo varían y buscar una dirección que conserve al menos el $85\,\%$ de la varianza.
+Cada fila es un punto y cada columna es una característica medida en la misma unidad y escala. Vamos a centrar los datos, medir cómo varían y buscar una dirección que conserve al menos el 85 % de la varianza.
 
 ### a) Calcular las medias y centrar los datos
 
 El subíndice $j$ identifica una columna. Su media $\bar x_j$ se calcula sumando sus cuatro valores y dividiendo por el número de observaciones $n=4$.
 
-$$
+```math
 \bar x_1=\frac{1+2+4+5}{4}=3,\qquad
 \bar x_2=\frac{1+0+4+3}{4}=2.
-$$
+```
 
 Para centrar cada fila restamos $(3,2)$. El primer número se resta a la primera característica y el segundo a la segunda.
 
@@ -43,9 +43,9 @@ Para centrar cada fila restamos $(3,2)$. El primer número se resta a la primera
 
 Por tanto, la media de las filas es $\bar{\mathbf x}=(3,2)$ y la matriz centrada es
 
-$$
+```math
 X_c=\begin{pmatrix}-2&-1\\-1&-2\\1&2\\2&1\end{pmatrix}.
-$$
+```
 
 Las dos columnas ahora suman cero. Cada coordenada centrada indica cuánto se aleja esa medida de su media, en las unidades originales. Estandarizar añadiría otro paso, dividir por la desviación estándar de cada columna.
 
@@ -53,9 +53,9 @@ Las dos columnas ahora suman cero. Cada coordenada centrada indica cuánto se al
 
 La entrada $s_{jk}$ de la matriz $S$ compara las columnas $j$ y $k$. Multiplicamos sus desviaciones **en la misma fila**, sumamos los productos y dividimos por $n-1$.
 
-$$
+```math
 s_{jk}=\frac{\sum_{i=1}^{n}(x_{ij}-\bar x_j)(x_{ik}-\bar x_k)}{n-1}.
-$$
+```
 
 - **En la diagonal** ($j=k$), multiplicamos una desviación por sí misma. El resultado mide la varianza de una columna.
 - **Fuera de la diagonal** ($j\ne k$), multiplicamos desviaciones de dos columnas. El resultado mide su covarianza. En la primera fila, $(-2)(-1)=2$ aporta un producto positivo porque ambas medidas están por debajo de sus medias.
@@ -73,17 +73,17 @@ Si dividimos por $n$ con estos datos, tanto la matriz como sus valores propios q
 
 La transpuesta $X_c^\top$ intercambia filas y columnas. En $X_c^\top X_c$, cada entrada es el producto punto de dos columnas originales de $X_c$. Las dimensiones son $(2\times 4)(4\times 2)=2\times 2$.
 
-$$
+```math
 \begin{aligned}
 s_{11}&=\frac{(-2)^2+(-1)^2+1^2+2^2}{3}=\frac{10}{3},\\
 s_{22}&=\frac{(-1)^2+(-2)^2+2^2+1^2}{3}=\frac{10}{3},\\
 s_{12}=s_{21}&=\frac{(-2)(-1)+(-1)(-2)+(1)(2)+(2)(1)}{3}=\frac{8}{3}.
 \end{aligned}
-$$
+```
 
-$$
+```math
 S=\frac{X_c^\top X_c}{n-1}=\begin{pmatrix}10/3&8/3\\8/3&10/3\end{pmatrix}.
-$$
+```
 
 La simetría $s_{12}=s_{21}$ sirve para revisar la cuenta. La covarianza positiva muestra que, en estos datos, ambas medidas tienden a quedar por encima de sus medias juntas o por debajo juntas.
 
@@ -102,14 +102,14 @@ Si $q$ tiene largo uno, su valor propio nos dice cuánta varianza obtenemos al p
 
 Si juntamos las coordenadas en la columna $z=X_cv$, su media es cero, porque las columnas de $X_c$ suman cero. Su varianza muestral se puede escribir así.
 
-$$
-\operatorname{Var}(z)
+```math
+\mathrm{Var}(z)
 =\frac{\sum_i z_i^2}{n-1}
 =\frac{z^\top z}{n-1}
 =\frac{(X_cv)^\top(X_cv)}{n-1}
 =v^\top\left(\frac{X_c^\top X_c}{n-1}\right)v
 =v^\top Sv.
-$$
+```
 
 Si tomamos $v=q$ con largo uno, la varianza proyectada es $q^\top Sq=\lambda q^\top q=\lambda$.
 
@@ -117,12 +117,12 @@ Una matriz real simétrica como $S$ tiene una base de vectores propios ortogonal
 
 Al calcular $v^\top Sv$, los términos cruzados desaparecen porque $q_1^\top q_2=0$.
 
-$$
-\operatorname{Var}(X_cv)
+```math
+\mathrm{Var}(X_cv)
 =c_1^2\lambda_1+c_2^2\lambda_2
 \le c_1^2\lambda_1+c_2^2\lambda_1
 =\lambda_1.
-$$
+```
 
 La cota se alcanza tomando $v=q_1$, con $c_1=1$ y $c_2=0$. Por eso la primera componente principal, PC1, usa la dirección del mayor valor propio.
 
@@ -132,14 +132,14 @@ La cota se alcanza tomando $v=q_1$, con $c_1=1$ y $c_2=0$. Por eso la primera co
 
 Buscamos un $q$ distinto de cero. Si $S-\lambda I$ fuera invertible, su inversa nos daría $q=0$. Por eso buscamos los valores de $\lambda$ que hacen que el determinante sea cero.
 
-$$
+```math
 \begin{aligned}
 S-\lambda I
 &=\begin{pmatrix}10/3-\lambda&8/3\\8/3&10/3-\lambda\end{pmatrix},\\
 \det(S-\lambda I)
 &=(10/3-\lambda)^2-(8/3)^2=0.
 \end{aligned}
-$$
+```
 
 El determinante de una matriz $2\times2$ es el producto de la diagonal principal menos el de la otra diagonal. Aquí tenemos una diferencia de cuadrados, así que $10/3-\lambda=8/3$ o $10/3-\lambda=-8/3$. Los valores propios son $\lambda_2=10/3-8/3=2/3$ y $\lambda_1=10/3+8/3=6$.
 
@@ -147,9 +147,9 @@ El determinante de una matriz $2\times2$ es el producto de la diagonal principal
 
 Elegimos el par $(1,1)^\top$ y dividimos por su largo $\sqrt{1^2+1^2}=\sqrt 2$ para obtener un vector unitario.
 
-$$
+```math
 q_1=\frac{1}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix}.
-$$
+```
 
 **Comprueba la cuenta.** Multiplica $S$ por $(1,1)^\top$. Obtienes $(18/3,18/3)^\top=6(1,1)^\top$. También puedes elegir $-q_1$. Eso invierte el signo de las proyecciones y conserva su varianza.
 
@@ -159,16 +159,16 @@ Para $\lambda_2=2/3$, el mismo cálculo da $\frac83u_1+\frac83u_2=0$. Elegimos $
 
 La varianza total es la suma de las varianzas de las columnas centradas, $10/3+10/3=20/3$. También se obtiene sumando los valores propios, porque PC1 y PC2 expresan esa misma variación en dos ejes ortogonales.
 
-$$
+```math
 \begin{aligned}
 \text{Proporción explicada por PC1}
 &=\frac{6}{6+2/3}=\frac{18}{20}=0{,}90,\\
 \text{Proporción explicada por PC2}
 &=\frac{2/3}{6+2/3}=\frac{2}{20}=0{,}10.
 \end{aligned}
-$$
+```
 
-**Una componente basta.** PC1 conserva el $90\,\%$, por encima del $85\,\%$ pedido. Al conservar solo PC1 queda fuera el $10\,\%$ de la varianza.
+**Una componente basta.** PC1 conserva el 90 %, por encima del 85 % pedido. Al conservar solo PC1 queda fuera el 10 % de la varianza.
 
 ### e) Proyectar las cuatro observaciones e interpretar
 
@@ -195,12 +195,12 @@ Como comprobación, la varianza muestral de las proyecciones es $[4(9/2)]/3=6$, 
 
 Comprueba que las proporciones de todas las componentes sumen uno.
 
-**Mini práctica.** Con los mismos datos, ¿cuántas componentes necesitas para conservar al menos el $95\,\%$?
+**Mini práctica.** Con los mismos datos, ¿cuántas componentes necesitas para conservar al menos el 95 %?
 
 <details>
 <summary>Ver respuesta</summary>
 
-Necesitas dos. Con PC1 obtienes el $90\,\%$. Al agregar PC2 acumulas $90\,\%+10\,\%=100\,\%$.
+Necesitas dos. Con PC1 obtienes el 90 %. Al agregar PC2 acumulas 90 % + 10 % = 100 %.
 
 </details>
 
@@ -218,10 +218,10 @@ Tenemos tres puntos y queremos dibujar una recta que se acerque a ellos. En (a) 
 - **Residuo** $e_i=\hat y_i-y_i$. Es la diferencia entre lo que predice la recta y lo que observamos.
 - **Costo** $J(b,w)$. Junta los errores de la recta en un número que podemos usar para comparar distintos valores de $b$ y $w$.
 
-$$
+```math
 J(b,w)=\frac{1}{2n}\sum_{i=1}^{n}e_i^2
 =\frac{1}{2n}\sum_{i=1}^{n}(wx_i+b-y_i)^2,\qquad n=3.
-$$
+```
 
 Elevar cada error al cuadrado evita que se cancelen errores de distinto signo y da más peso a errores grandes. Por ejemplo, en la primera observación el residuo es $w(0)+b-1=b-1$ y su cuadrado aporta $(b-1)^2$ a la suma.
 
@@ -236,7 +236,7 @@ Para derivar $e_i^2$ usamos la **regla de la cadena**. La función de afuera ele
 
 La derivada de la función de afuera es $2e_i$. La multiplicamos por la derivada de adentro y sumamos los aportes de todas las observaciones.
 
-$$
+```math
 \begin{aligned}
 \frac{\partial J}{\partial b}
 &=\frac{1}{2n}\sum_i 2e_i\cdot 1
@@ -245,7 +245,7 @@ $$
 &=\frac{1}{2n}\sum_i 2e_i\cdot x_i
 =\frac{1}{n}\sum_i (wx_i+b-y_i)x_i.
 \end{aligned}
-$$
+```
 
 **¿Por qué $1/(2n)$?** El $1/n$ promedia los errores cuadrados y da el MSE. El $1/2$ extra hace que el $2$ de la derivada se cancele. Puedes verlo en la cuenta de arriba al pasar de $\frac{1}{2n}\sum_i 2e_i$ a $\frac{1}{n}\sum_i e_i$.
 
@@ -256,37 +256,37 @@ $$
 
 Partimos con la derivada respecto de $b$. Al sumar, $\sum_i b=nb$, porque agregamos el mismo $b$ una vez por fila. Al dividir por $n$ aparecen las medias $\bar x=\sum_i x_i/n$ y $\bar y=\sum_i y_i/n$.
 
-$$
+```math
 \begin{aligned}
 0 &=\sum_i(wx_i+b-y_i)\\
   &=w\sum_i x_i+nb-\sum_i y_i,\\
 0 &= w\bar x+b-\bar y,\\
 b &= \bar y-w\bar x.
 \end{aligned}
-$$
+```
 
 **3. Sustituir $b$ y despejar $w$.** Al poner ese intercepto, el residuo queda escrito en términos de las medias.
 
-$$
+```math
 wx_i+\bar y-w\bar x-y_i=w(x_i-\bar x)-(y_i-\bar y).
-$$
+```
 
 La primera ecuación ya nos dice que $\sum_i e_i=0$. Por eso, en la segunda podemos cambiar $x_i$ por $x_i-\bar x$, ya que estaríamos restando $\bar x\sum_i e_i=0$. Así aparecen las desviaciones respecto de las medias en ambos factores.
 
-$$
+```math
 \begin{aligned}
 0 &= \sum_i e_ix_i
    =\sum_i e_i(x_i-\bar x),\\
   &=\sum_i [w(x_i-\bar x)-(y_i-\bar y)](x_i-\bar x),\\
   &=w\sum_i(x_i-\bar x)^2-\sum_i(x_i-\bar x)(y_i-\bar y).
 \end{aligned}
-$$
+```
 
 Si las entradas varían, $\sum_i(x_i-\bar x)^2>0$ y se puede dividir.
 
-$$
+```math
 w=\frac{\sum_i(x_i-\bar x)(y_i-\bar y)}{\sum_i(x_i-\bar x)^2}.
-$$
+```
 
 **4. Poner los números de la tabla.** Con $\bar x=(0+1+2)/3=1$ y $\bar y=(1+2+2)/3=5/3$, calculamos los términos que aparecen arriba y sumamos por columna.
 
@@ -297,10 +297,10 @@ $$
 | 3 | $1$ | $1/3$ | $1/3$ | $1$ |
 | **Suma** | $0$ | $0$ | $1$ | $2$ |
 
-$$
+```math
 w=\frac12,\qquad b=\frac53-\frac12(1)=\frac76,\qquad
 \hat y(x)=\frac12x+\frac76.
-$$
+```
 
 <details>
 <summary>Demostración de que esta recta da el costo mínimo</summary>
@@ -323,18 +323,18 @@ Sustituimos cada $x_i$ en la recta y restamos el valor real. Para $x_2=1$, por e
 
 La suma de los cuadrados de los residuos, o SSE, vale $1/36+4/36+1/36=6/36=1/6$.
 
-$$
-\operatorname{MSE}=\frac{1/6}{3}=\frac1{18}\approx0{,}0556,\qquad
+```math
+\mathrm{MSE}=\frac{1/6}{3}=\frac1{18}\approx0{,}0556,\qquad
 J=\frac{1/6}{2\cdot3}=\frac1{36}\approx0{,}0278.
-$$
+```
 
 Puedes revisar las condiciones del óptimo con la tabla. Los residuos suman $1/6-1/3+1/6=0$, y al multiplicarlos por sus $x_i$ se obtiene $0-1/3+2/6=0$. Tanto el MSE como $J$ se calcularon sobre los datos usados para ajustar la recta.
 
 ### c) Predecir en $x=3$ e interpretar la recta
 
-$$
+```math
 \hat y(3)=\frac12(3)+\frac76=\frac96+\frac76=\frac83\approx2{,}6667.
-$$
+```
 
 Por cada unidad que aumenta $x$, la recta predice un aumento de $0{,}5$ unidades en la respuesta. En $x=0$ predice $7/6$, el intercepto. Como las entradas observadas están entre $0$ y $2$, la predicción en $3$ es una **extrapolación**. Para calcular su error haría falta observar el valor real de $y$ en ese punto.
 
@@ -344,33 +344,33 @@ El **gradiente** junta las dos pendientes del costo. Para dar un paso que apunte
 
 **1. Calcular las dos pendientes en el mismo punto.** El superíndice $(0)$ indica el inicio. Con $b^{(0)}=w^{(0)}=0$, las predicciones son $(0,0,0)$ y los residuos son $(-1,-2,-2)$.
 
-$$
+```math
 g_b=\frac{-1-2-2}{3}=-\frac53,\qquad
 g_w=\frac{(-1)(0)+(-2)(1)+(-2)(2)}{3}=-2.
-$$
+```
 
 **2. Actualizar los parámetros.** Usamos las dos pendientes que acabamos de calcular. El superíndice $(1)$ indica que ya dimos un paso.
 
-$$
+```math
 \begin{aligned}
 b^{(1)} &= b^{(0)}-\alpha g_b
 =0-\frac1{10}\left(-\frac53\right)=\frac16\approx0{,}1667,\\
 w^{(1)} &= w^{(0)}-\alpha g_w
 =0-\frac1{10}(-2)=\frac15=0{,}2.
 \end{aligned}
-$$
+```
 
 Al restar pendientes negativas, ambos parámetros suben.
 
 **3. Comprobar si bajó el costo.** La recta después de un paso es $\hat y(x)=x/5+1/6$. La evaluamos en los tres puntos y obtenemos los residuos $(-5/6,-49/30,-43/30)$.
 
-$$
+```math
 \begin{aligned}
 J_{\text{inicial}}&=\frac{1+4+4}{6}=\frac32,\\
 J_{\text{primer paso}}&=\frac{(5/6)^2+(49/30)^2+(43/30)^2}{6}=\frac{65}{72},\\
 J_{\text{óptimo}}&=\frac1{36}.
 \end{aligned}
-$$
+```
 
 El primer paso bajó el costo de $1{,}5$ a aproximadamente $0{,}9028$. La solución analítica, con $b=7/6$ y $w=1/2$, alcanza $0{,}0278$. Para dar otro paso habría que volver a calcular predicciones, residuos y derivadas usando la recta nueva.
 
@@ -412,9 +412,9 @@ Las dos predicciones coinciden con sus etiquetas. En la primera fila, $0{,}2689$
 
 **1. Mirar cuánta probabilidad recibió la clase real.** Acertar una etiqueta con probabilidad $0{,}51$ y acertarla con $0{,}99$ cuenta igual si solo miras aciertos. La pérdida logística sí distingue esos casos porque calcula $-\ln$ de la probabilidad asignada a la clase real.
 
-$$
+```math
 \ell_i(p_i)=-[y_i\ln p_i+(1-y_i)\ln(1-p_i)].
-$$
+```
 
 El logaritmo $\ln$ tiene base $e$. Para leer la fórmula, reemplaza $y_i$ por su etiqueta. Uno de los dos sumandos queda multiplicado por cero.
 
@@ -427,23 +427,23 @@ Cuanto más cerca de 1 quede la probabilidad de la clase real, más cerca de cer
 
 En estos dos datos $1-p_1=p_2$. Por eso las pérdidas coinciden.
 
-$$
+```math
 \ell_1=-\ln(1-p_1),\qquad
 \ell_2=-\ln p_2=\ln(1+\exp(-1))\approx0{,}3132617.
-$$
+```
 
 **2. Promediar las pérdidas y sumar L2.** Aquí tenemos un solo peso $w$. L2 agrega un término que crece con el cuadrado de ese peso.
 
-$$
+```math
 J(b,w)=L(b,w)+\frac{\lambda}{2}w^2,\qquad
 L(b,w)=\frac{\ell_1+\ell_2}{2}.
-$$
+```
 
 En $(b,w)=(0,1)$, el promedio es $L\approx0{,}3132617$. El peso aporta $(0{,}2/2)(1)^2=0{,}1$ y el intercepto aporta cero. Sumamos la penalización **una sola vez** al promedio.
 
-$$
+```math
 J(0,1)\approx0{,}3132617+0{,}1\approx0{,}4133.
-$$
+```
 
 ### c) Derivar el costo y actualizar $w$ y $b$
 
@@ -459,7 +459,7 @@ En estas dos cuentas omitimos el subíndice $i$ para poder leer mejor las expres
 
 **Sigmoide.** Escribimos $p=(1+\exp(-a))^{-1}$. Al derivar la potencia $-1$, aparece $-(1+\exp(-a))^{-2}$. Al derivar la función de adentro, aparece $-\exp(-a)$. Los dos signos negativos se cancelan.
 
-$$
+```math
 \begin{aligned}
 \frac{dp}{da}
 &=-(1+\exp(-a))^{-2}[-\exp(-a)]\\
@@ -467,13 +467,13 @@ $$
 &=\frac{1}{1+\exp(-a)}\cdot\frac{\exp(-a)}{1+\exp(-a)}
 =p(1-p).
 \end{aligned}
-$$
+```
 
 El segundo factor es $1-p$ porque $1-1/(1+\exp(-a))=\exp(-a)/(1+\exp(-a))$.
 
 **Pérdida.** La etiqueta $y$ queda fija. La derivada de $\ln p$ es $1/p$. En $\ln(1-p)$ aparece además un $-1$ al derivar $1-p$.
 
-$$
+```math
 \begin{aligned}
 \frac{d\ell}{dp}
 &=-\left[y\frac{1}{p}+(1-y)\frac{-1}{1-p}\right]\\
@@ -481,7 +481,7 @@ $$
 &=\frac{-y(1-p)+(1-y)p}{p(1-p)}
 =\frac{p-y}{p(1-p)}.
 \end{aligned}
-$$
+```
 
 En el numerador, $-y+yp+p-yp=p-y$.
 
@@ -489,21 +489,21 @@ En el numerador, $-y+yp+p-yp=p-y$.
 
 **2. Multiplicar y simplificar.** En el producto, el factor $p_i(1-p_i)$ aparece arriba y abajo. Al cancelarlo queda una expresión corta.
 
-$$
+```math
 \frac{d\ell_i}{da_i}
 =\frac{d\ell_i}{dp_i}\frac{dp_i}{da_i}
 =\frac{p_i-y_i}{p_i(1-p_i)}p_i(1-p_i)
 =p_i-y_i.
-$$
+```
 
 **3. Llegar a los parámetros y agregar L2.** En $a_i=wx_i+b$, un cambio en $w$ entra multiplicado por $x_i$ y un cambio en $b$ entra multiplicado por $1$. Por eso las derivadas usan $(p_i-y_i)x_i$ y $(p_i-y_i)$, respectivamente.
 
 Promediamos los aportes de los $n=2$ datos. Al derivar L2, el término adicional es $\frac{\lambda}{2}(2w)=\lambda w$ para $w$ y cero para $b$. Fíjate en que usamos la probabilidad $p_i$ antes de aplicar el umbral.
 
-$$
+```math
 \frac{\partial J}{\partial w}=\frac1n\sum_i(p_i-y_i)x_i+\lambda w,\qquad
 \frac{\partial J}{\partial b}=\frac1n\sum_i(p_i-y_i).
-$$
+```
 
 **4. Evaluar el gradiente y dar el paso.** Sea $q=1/(1+\exp(1))\approx0{,}2689414$. En el punto inicial, $p_1=q$ y $p_2=1-q$.
 
@@ -514,15 +514,15 @@ $$
 
 Para $b$ sumamos $q$ y $-q$, que se cancelan por la simetría de estos datos y del punto inicial. Para $w$ promediamos $-q$ y $-q$ y agregamos $0{,}2(1)$.
 
-$$
+```math
 g_b=\frac{q-q}{2}=0,\qquad
 g_w=\frac{-q-q}{2}+0{,}2=-q+0{,}2\approx-0{,}0689414.
-$$
+```
 
-$$
+```math
 b^{(1)}=0-0{,}5(0)=0,\qquad
 w^{(1)}=1-0{,}5(0{,}2-q)\approx1{,}0345.
-$$
+```
 
 **Comprueba el paso.** Con $b=0$, los puntajes son $-w$ y $w$. Ambas clases reales reciben probabilidad $\sigma(w)$, así que $L=-\ln(\sigma(w))=\ln(1+\exp(-w))$.
 
@@ -532,9 +532,9 @@ Con el peso actualizado sin redondear, $L\approx0{,}3041073$ y $(\lambda/2)w^2\a
 
 Volvemos a $(b^{(0)},w^{(0)})=(0,1)$. Como los puntajes iniciales son los mismos, la parte del gradiente que viene de los datos sigue siendo $-q$ para $w$ y $0$ para $b$. Con $\lambda=0$, el peso queda
 
-$$
+```math
 w^{(1)}_{\text{sin L2}}=1-0{,}5(-q)\approx1{,}1345,\qquad b^{(1)}=0.
-$$
+```
 
 En este paso actúan dos aportes sobre el peso.
 
@@ -547,11 +547,11 @@ Así, el peso crece hasta $1{,}0345$ con L2 y hasta $1{,}1345$ sin L2. La penali
 
 Usamos $w^{(1)}=1-0{,}5(0{,}2-q)$ y $b^{(1)}=0$. Sustituimos en el puntaje, aplicamos la sigmoide y finalmente el umbral.
 
-$$
+```math
 a=2w^{(1)}+0\approx2{,}0689414,\qquad
 p=\frac{1}{1+\exp(-a)}\approx0{,}8878,\qquad
 \hat y=1.
-$$
+```
 
 El valor $0{,}8878$ es la probabilidad asignada a la clase 1. Como supera $0{,}5$, la clase predicha es 1.
 
@@ -721,7 +721,7 @@ Un **Pipeline** ejecuta las etapas en orden y le pasa a cada una el resultado de
 | 0 | 10 | 0 |
 | 1 | 0 | 10 |
 
-Las filas son las clases reales y las columnas, las predichas. La diagonal contiene los aciertos, así que la exactitud es $(10+10)/20=1{,}0$. El $100\,\%$ describe el resultado en estas 20 flores de prueba de dos especies, con esta partición.
+Las filas son las clases reales y las columnas, las predichas. La diagonal contiene los aciertos, así que la exactitud es $(10+10)/20=1{,}0$. El 100 % describe el resultado en estas 20 flores de prueba de dos especies, con esta partición.
 
 ### d) Leer las probabilidades y la clase de la primera flor
 
@@ -748,30 +748,30 @@ Para la primera flor, `probabilidades[0]` da $0{,}1502$ para setosa y $0{,}8498$
 
 Las cuatro entradas de `pca.components_[0]` son los coeficientes de la primera dirección. Para verificar su proyección usamos los números que imprime el código con cinco decimales.
 
-$$
+```math
 \begin{aligned}
 z_1 &\approx (-0{,}90386)(0{,}48539)+(-1{,}40881)(-0{,}37775)\\
     &\quad +(0{,}30505)(0{,}56138)+(0{,}38346)(0{,}55366)
     \approx 0{,}4770.
 \end{aligned}
-$$
+```
 
 La segunda coordenada se obtiene del mismo modo con `pca.components_[1]`. El signo de una dirección de PCA puede invertirse junto con el de su coordenada. Si el clasificador se ajusta sobre esa coordenada invertida, puede compensar el cambio con el signo del peso correspondiente.
 
 **3. Calcular el puntaje y aplicar la sigmoide.** Usamos la misma idea del ejercicio 3 con dos pesos, uno por componente. `clasificador.coef_[0]` contiene los pesos y `clasificador.intercept_[0]` contiene el intercepto.
 
-$$
+```math
 \begin{aligned}
 a &= w_1\,\mathrm{PC1}+w_2\,\mathrm{PC2}+b\\
   &\approx (2{,}4449)(0{,}4770)+(-0{,}2330)(-1{,}6274)+0{,}1877.
 \end{aligned}
-$$
+```
 
 Con los valores completos se obtiene $a\approx1{,}7332$ y $\sigma(a)\approx0{,}8498$ para la clase 1. Su complemento, $1-\sigma(a)\approx0{,}1502$, corresponde a la clase 0. `np.round` redondea lo que se imprime. El cálculo usa todos los decimales disponibles.
 
 </details>
 
-**Dos porcentajes, dos preguntas.** `pca.explained_variance_ratio_` dice cuánto conservamos de las medidas estandarizadas de entrenamiento. Aquí las componentes explican $0{,}7740$ y $0{,}1889$, que juntas suman cerca de $96{,}29\,\%$. La exactitud del $100\,\%$ responde cuántas etiquetas acertó el clasificador entre las 20 flores de prueba.
+**Dos porcentajes, dos preguntas.** `pca.explained_variance_ratio_` dice cuánto conservamos de las medidas estandarizadas de entrenamiento. Aquí las componentes explican $0{,}7740$ y $0{,}1889$, que juntas suman cerca de 96,29 %. La exactitud del 100 % responde cuántas etiquetas acertó el clasificador entre las 20 flores de prueba.
 
 ### e) Explicar qué aprende cada etapa, cómo evitar la fuga y qué cambia al reducir C
 
