@@ -25,11 +25,11 @@ Cada fila es un punto y cada columna es una característica medida en la misma u
 
 ### a) Calcular las medias y centrar los datos
 
-El subíndice $j$ identifica una columna. Su media $\bar x_j$ se calcula sumando sus cuatro valores y dividiendo por el número de observaciones $n=4$.
+El subíndice $j$ identifica una columna. Su media $\overline{x_j}$ se calcula sumando sus cuatro valores y dividiendo por el número de observaciones $n=4$.
 
 ```math
-\bar x_1=\frac{1+2+4+5}{4}=3,\qquad
-\bar x_2=\frac{1+0+4+3}{4}=2.
+\overline{x_1}=\frac{1+2+4+5}{4}=3,\qquad
+\overline{x_2}=\frac{1+0+4+3}{4}=2.
 ```
 
 Para centrar cada fila restamos $(3,2)$. El primer número se resta a la primera característica y el segundo a la segunda.
@@ -41,7 +41,7 @@ Para centrar cada fila restamos $(3,2)$. El primer número se resta a la primera
 | 3 | $(4,4)$ | $(4-3,4-2)$ | $(1,2)$ |
 | 4 | $(5,3)$ | $(5-3,3-2)$ | $(2,1)$ |
 
-Por tanto, la media de las filas es $\bar{\mathbf x}=(3,2)$ y la matriz centrada es
+Por tanto, la media de las filas es $\overline{\mathbf x}=(3,2)$ y la matriz centrada es
 
 ```math
 X_c=\begin{pmatrix}-2&-1\\-1&-2\\1&2\\2&1\end{pmatrix}.
@@ -54,7 +54,7 @@ Las dos columnas ahora suman cero. Cada coordenada centrada indica cuánto se al
 La entrada $s_{jk}$ de la matriz $S$ compara las columnas $j$ y $k$. Multiplicamos sus desviaciones **en la misma fila**, sumamos los productos y dividimos por $n-1$.
 
 ```math
-s_{jk}=\frac{\sum_{i=1}^{n}(x_{ij}-\bar x_j)(x_{ik}-\bar x_k)}{n-1}.
+s_{jk}=\frac{\sum_{i=1}^{n}(x_{ij}-\overline{x_j})(x_{ik}-\overline{x_k})}{n-1}.
 ```
 
 - **En la diagonal** ($j=k$), multiplicamos una desviación por sí misma. El resultado mide la varianza de una columna.
@@ -245,43 +245,43 @@ La derivada de la función de afuera es $2e_i$. La multiplicamos por la derivada
 
 **2. Despejar $b$.** En un mínimo las dos derivadas son cero. Si alguna pendiente fuera distinta de cero, podríamos mover ese parámetro en la dirección que baja el costo.
 
-Partimos con la derivada respecto de $b$. Al sumar, $\sum_i b=nb$, porque agregamos el mismo $b$ una vez por fila. Al dividir por $n$ aparecen las medias $\bar x=\sum_i x_i/n$ y $\bar y=\sum_i y_i/n$.
+Partimos con la derivada respecto de $b$. Al sumar, $\sum_i b=nb$, porque agregamos el mismo $b$ una vez por fila. Al dividir por $n$ aparecen las medias $\overline{x}=\sum_i x_i/n$ y $\overline{y}=\sum_i y_i/n$.
 
 ```math
 \begin{aligned}
 0 &=\sum_i(wx_i+b-y_i)\\
   &=w\sum_i x_i+nb-\sum_i y_i,\\
-0 &= w\bar x+b-\bar y,\\
-b &= \bar y-w\bar x.
+0 &= w\overline{x}+b-\overline{y},\\
+b &= \overline{y}-w\overline{x}.
 \end{aligned}
 ```
 
 **3. Sustituir $b$ y despejar $w$.** Al poner ese intercepto, el residuo queda escrito en términos de las medias.
 
 ```math
-wx_i+\bar y-w\bar x-y_i=w(x_i-\bar x)-(y_i-\bar y).
+wx_i+\overline{y}-w\overline{x}-y_i=w(x_i-\overline{x})-(y_i-\overline{y}).
 ```
 
-La primera ecuación ya nos dice que $\sum_i e_i=0$. Por eso, en la segunda podemos cambiar $x_i$ por $x_i-\bar x$, ya que estaríamos restando $\bar x\sum_i e_i=0$. Así aparecen las desviaciones respecto de las medias en ambos factores.
+La primera ecuación ya nos dice que $\sum_i e_i=0$. Por eso, en la segunda podemos cambiar $x_i$ por $x_i-\overline{x}$, ya que estaríamos restando $\overline{x}\sum_i e_i=0$. Así aparecen las desviaciones respecto de las medias en ambos factores.
 
 ```math
 \begin{aligned}
 0 &= \sum_i e_ix_i
-   =\sum_i e_i(x_i-\bar x),\\
-  &=\sum_i [w(x_i-\bar x)-(y_i-\bar y)](x_i-\bar x),\\
-  &=w\sum_i(x_i-\bar x)^2-\sum_i(x_i-\bar x)(y_i-\bar y).
+   =\sum_i e_i(x_i-\overline{x}),\\
+  &=\sum_i [w(x_i-\overline{x})-(y_i-\overline{y})](x_i-\overline{x}),\\
+  &=w\sum_i(x_i-\overline{x})^2-\sum_i(x_i-\overline{x})(y_i-\overline{y}).
 \end{aligned}
 ```
 
-Si las entradas varían, $\sum_i(x_i-\bar x)^2>0$ y se puede dividir.
+Si las entradas varían, $\sum_i(x_i-\overline{x})^2>0$ y se puede dividir.
 
 ```math
-w=\frac{\sum_i(x_i-\bar x)(y_i-\bar y)}{\sum_i(x_i-\bar x)^2}.
+w=\frac{\sum_i(x_i-\overline{x})(y_i-\overline{y})}{\sum_i(x_i-\overline{x})^2}.
 ```
 
-**4. Poner los números de la tabla.** Con $\bar x=(0+1+2)/3=1$ y $\bar y=(1+2+2)/3=5/3$, calculamos los términos que aparecen arriba y sumamos por columna.
+**4. Poner los números de la tabla.** Con $\overline{x}=(0+1+2)/3=1$ y $\overline{y}=(1+2+2)/3=5/3$, calculamos los términos que aparecen arriba y sumamos por columna.
 
-| $i$ | $x_i-\bar x$ | $y_i-\bar y$ | Producto de desviaciones | $(x_i-\bar x)^2$ |
+| $i$ | $x_i-\overline{x}$ | $y_i-\overline{y}$ | Producto de desviaciones | $(x_i-\overline{x})^2$ |
 | --- | --- | --- | --- | --- |
 | 1 | $-1$ | $-2/3$ | $2/3$ | $1$ |
 | 2 | $0$ | $1/3$ | $0$ | $0$ |
