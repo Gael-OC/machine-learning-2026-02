@@ -1,6 +1,6 @@
 # Simulacro de la Prueba 2
 
-[Inicio](README.md) · [Pauta del simulacro](09-pauta.md#simulacro)
+[← Anterior: Ejercicios propuestos](07-ejercicios-propuestos.md) · [Inicio](README.md) · [Siguiente: Pauta del simulacro →](09-pauta.md#simulacro)
 
 Resuelve primero la prueba completa y luego corrige con la pauta. Usa papel y calculadora. Puedes leer y responder los ejercicios de Python sin ejecutar el código. Deja las cuentas y expresa los decimales a cuatro cifras cuando haga falta.
 
@@ -167,4 +167,6 @@ print(f1_score(y_te, grid.predict(z_te), average="macro"))
 2. **(4 puntos)** ¿Qué mide cada una de las dos cifras impresas? ¿Cuál usa etiquetas de TEST?
 3. **(2 puntos)** ¿Cuántos ajustes del estimador que recibe Grid hay, incluyendo el reajuste por defecto?
 
-[Corregir el simulacro con la pauta](09-pauta.md#simulacro)
+---
+
+[← Anterior: Banco de 20 ejercicios](07-ejercicios-propuestos.md) · [Inicio](README.md) · [Siguiente: Corregir el simulacro con la pauta →](09-pauta.md#simulacro)

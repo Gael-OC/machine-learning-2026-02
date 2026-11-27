@@ -1,6 +1,6 @@
 # Pauta de autocorrección
 
-[Inicio](README.md) · [Ejercicios propuestos](07-ejercicios-propuestos.md) · [Ir a la pauta del simulacro](#simulacro)
+[← Anterior](08-simulacro.md) · [Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md) · [Ejercicios propuestos](07-ejercicios-propuestos.md) · [Ir a la pauta del simulacro](#simulacro)
 
 Compara el procedimiento antes de mirar solo el número final. Si te equivocaste, identifica el primer paso que cambió tu respuesta y vuelve a intentar ese inciso. En el simulacro, los puntos se asignan por el trabajo indicado en cada inciso. Acepta resultados equivalentes que respeten la convención solicitada y pequeñas diferencias de redondeo.
 
@@ -185,7 +185,7 @@ La media macro-F1 mayor es $0{,}76$. Está en el índice 0, así que se imprime 
 | --- | --- |
 | T01 | **B.** El filtro conserva columnas originales. PCA, t-SNE y Fisherfaces construyen coordenadas nuevas. |
 | T02 | **C.** $0{,}56$ supera $0{,}50$ y queda bajo $0{,}65$. Cambia la clase de 1 a 0. La salida de la sigmoide sigue en $0{,}56$. |
-| T03 | **D.** k-NN conserva los ejemplos. Con dimensión de entrada fija, los demás ejemplos tienen un número fijo de pesos en la representación dada. |
+| T03 | **D.** k-NN conserva los ejemplos. Con dimensión de entrada fija, las demás opciones corresponden a modelos paramétricos con un número fijo de pesos. |
 | T04 | **A.** La varianza describe dispersión. El rendimiento del clasificador se mide con sus predicciones. |
 | T05 | **C.** El criterio usa el promedio de CV. Se reajusta A con todo TRAIN y se mide su rendimiento en TEST. |
 
@@ -339,3 +339,7 @@ print(f1_score(y_te, grid.predict(X_te), average="macro"))
 ```
 
 Si pensaste que separar TEST primero era suficiente, revisa [qué aprende el pipeline en cada fold](05-ensambles-y-validacion.md#separar-buscar-reajustar-y-evaluar).
+
+---
+
+[← Anterior: Simulacro](08-simulacro.md) · [Ejercicios propuestos](07-ejercicios-propuestos.md) · [Ayuda memoria](06-ayuda-memoria.md) · [Inicio](README.md)

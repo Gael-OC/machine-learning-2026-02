@@ -1,6 +1,6 @@
 # Regresión y clasificación lineal
 
-[Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#modelos-lineales) · [Practicar](07-ejercicios-propuestos.md#modelos-lineales) · [Pauta](09-pauta.md#modelos-lineales)
+[← Anterior](01-preparacion-y-pca.md) · [Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#modelos-lineales) · [Practicar](07-ejercicios-propuestos.md#modelos-lineales) · [Pauta](09-pauta.md#modelos-lineales) · [Siguiente →](03-svm.md)
 
 ## Teoría
 
@@ -48,6 +48,11 @@ La sigmoide tiene derivada $p(1-p)$ respecto del puntaje. Al derivar la BCE por 
 
 </details>
 
+### Enfoque probabilístico: GaussianNB y BayesianRidge
+
+- **`GaussianNB`** es un clasificador **generativo**: modela cada atributo con una distribución gaussiana dentro de cada clase y supone independencia condicional entre atributos dada la clase.
+- **`BayesianRidge`** ajusta regresión lineal con regularización L2 bajo un enfoque bayesiano y puede devolver la **media** y la **desviación estándar predictivas**: una desviación mayor indica más incertidumbre y ensancha el intervalo predictivo aproximado.
+
 ## Ejercicios resueltos
 
 ### 1. Ajustar una recta y medir su error
@@ -77,7 +82,7 @@ En $x=1$, la flecha sube desde el valor real 2 hasta la predicción 3. Por eso, 
 \end{aligned}
 ```
 
-MAE y RMSE se leen en la unidad de $y$. $R^2$ compara con la referencia de la media. Puede ser negativo en datos de evaluación si el modelo queda por debajo de esa referencia.
+MAE y RMSE se leen en la unidad de $y$. En $R^2=1-\mathrm{SSE}/\mathrm{SST}$, $\mathrm{SSE}=\sum_i e_i^2$ es la suma de errores cuadrados del modelo y $\mathrm{SST}=\sum_i(y_i-\bar y)^2$ es la variación total respecto de la media. $R^2$ puede ser negativo en datos de evaluación si el modelo queda por debajo de esa referencia.
 
 **c) Predecir.** $\hat y(3)=1{,}5(3)+1{,}5=6$. El punto queda fuera del rango observado: es una extrapolación.
 
@@ -133,3 +138,7 @@ El rombo queda a la misma altura al cambiar el umbral. Supera la línea de $0{,}
 - En lectura de código, revisa la división de datos, las formas de `X` e `y` y dónde ocurre `fit`, incluso si el código lo generó una IA.
 
 **Material del curso** · *Clase 9. Regresión y clasificación lineal*, pp. 4–84. *Clase 10. Clasificadores fundamentales*, pp. 6–16. *Ayudantía 05*, ejercicios 2–4.
+
+---
+
+[← Anterior: 1. Preparación de datos y PCA](01-preparacion-y-pca.md) · [Inicio](README.md) · [Practicar este tema](07-ejercicios-propuestos.md#modelos-lineales) · [Siguiente: 3. Clasificadores fundamentales y SVM →](03-svm.md)

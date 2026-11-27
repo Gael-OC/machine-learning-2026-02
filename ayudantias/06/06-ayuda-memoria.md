@@ -1,6 +1,6 @@
 # Ayuda memoria para la Prueba 2
 
-[Inicio](README.md) · [Ejercicios propuestos](07-ejercicios-propuestos.md) · [Simulacro](08-simulacro.md)
+[← Anterior](05-ensambles-y-validacion.md) · [Inicio](README.md) · [Simulacro](08-simulacro.md) · [Siguiente: Ejercicios propuestos →](07-ejercicios-propuestos.md)
 
 Antes de calcular, anota qué piden, qué datos te dan y qué convención usa el enunciado. Redondea al final y escribe una frase sobre lo que significa el resultado.
 
@@ -48,3 +48,7 @@ Antes de calcular, anota qué piden, qué datos te dan y qué convención usa el
 - **Grid:** producto de las cantidades de valores de la cuadrícula. **Random:** hasta `n_iter` candidatos del espacio. Ajustes de cada búsqueda $=$ candidatos $\times$ folds $+1$ si reajusta. `best_score_` viene de CV y `best_params_` indica qué configuración ganó.
 
 [Volver a Ensambles y búsqueda](05-ensambles-y-validacion.md)
+
+---
+
+[← Anterior: 5. Ensambles y búsqueda](05-ensambles-y-validacion.md) · [Inicio](README.md) · [Siguiente: Banco de 20 ejercicios →](07-ejercicios-propuestos.md) · [Simulacro](08-simulacro.md)

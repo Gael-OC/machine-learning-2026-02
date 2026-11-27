@@ -1,6 +1,6 @@
 # Preparación de datos y PCA
 
-[Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#preparación-y-pca) · [Practicar](07-ejercicios-propuestos.md#preparación-y-pca) · [Pauta](09-pauta.md#preparación-y-pca)
+[Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#preparación-y-pca) · [Practicar](07-ejercicios-propuestos.md#preparación-y-pca) · [Pauta](09-pauta.md#preparación-y-pca) · [Siguiente →](02-modelos-lineales.md)
 
 ## Teoría
 
@@ -12,7 +12,7 @@ Imagina una tabla con largo, ancho y área de una hoja. **Seleccionar** largo y 
 | --- | --- |
 | Umbral de varianza | Conserva columnas cuya varianza supera el umbral. Una columna constante tiene varianza cero. Revisa las escalas antes de comparar. |
 | Filtro | Puntúa cada columna por separado. Pearson mide asociación lineal. El chi-cuadrado de independencia compara frecuencias observadas y esperadas. |
-| Envolvente | Usa un modelo para evaluar subconjuntos. RFE ajusta, elimina las variables menos importantes y vuelve a ajustar. La selección secuencial agrega o quita variables según el rendimiento de validación. |
+| Envolvente | Usa un modelo para evaluar subconjuntos. RFE ajusta, elimina las variables menos importantes y vuelve a ajustar. La selección secuencial parte sin variables y agrega una por paso (**hacia adelante** o *forward*), o parte con todas y quita una por paso (**hacia atrás** o *backward*), según el rendimiento de validación. |
 | Integrado | La elección se apoya en el entrenamiento. L1 puede dejar pesos en cero. Un árbol puede ordenar atributos por reducción de impureza. |
 
 Pearson toma valores entre $-1$ y $1$. Para ordenar por **fuerza lineal**, usa la magnitud. Un valor cercano a cero puede aparecer incluso cuando existe una relación curva. Con una columna constante su denominador es cero. Para chi-cuadrado, usa conteos en una tabla de contingencia. En scikit-learn, `SelectKBest(chi2, k=...)` requiere entradas no negativas, como indicadores o conteos. Una categoría sin orden se puede representar con indicadores. Asignarle números arbitrarios impone un orden.
@@ -131,3 +131,7 @@ Con PC1 tienes aproximadamente 95,18 %. Al sumar PC2 llegas al 100 %. Para el nu
 - Proyecta después de centrar con la media aprendida. Interpreta la varianza retenida como dispersión conservada y evalúa la clasificación con su propia métrica.
 
 **Material del curso** · *07 Data Preparation. Selección y extracción de características*, pp. 16–76. *Ayudantía 05*, ejercicio 1.
+
+---
+
+[Inicio](README.md) · [Practicar este tema](07-ejercicios-propuestos.md#preparación-y-pca) · [Siguiente: 2. Regresión y clasificación lineal →](02-modelos-lineales.md)

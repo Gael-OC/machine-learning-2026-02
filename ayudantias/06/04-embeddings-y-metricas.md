@@ -1,6 +1,6 @@
 # Embeddings y evaluación
 
-[Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#embeddings-y-métricas) · [Practicar](07-ejercicios-propuestos.md#embeddings-y-métricas) · [Pauta](09-pauta.md#embeddings-y-métricas)
+[← Anterior](03-svm.md) · [Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#embeddings-y-métricas) · [Practicar](07-ejercicios-propuestos.md#embeddings-y-métricas) · [Pauta](09-pauta.md#embeddings-y-métricas) · [Siguiente →](05-ensambles-y-validacion.md)
 
 ## Teoría
 
@@ -111,3 +111,7 @@ print(round(f1_score(real, pred, average="macro"), 4))
 - Una métrica evalúa predicciones. Un mapa se usa para explorar. En la matriz de confusión, lee primero el rótulo real y luego el predicho.
 
 **Material del curso** · *Laboratorio 02. Embeddings faciales lineales*, pp. 3–47 y 55–68. *Laboratorio 03*, pp. 7–16.
+
+---
+
+[← Anterior: 3. Clasificadores fundamentales y SVM](03-svm.md) · [Inicio](README.md) · [Practicar este tema](07-ejercicios-propuestos.md#embeddings-y-métricas) · [Siguiente: 5. Ensambles y búsqueda →](05-ensambles-y-validacion.md)

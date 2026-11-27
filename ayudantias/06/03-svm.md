@@ -1,12 +1,17 @@
 # Clasificadores fundamentales y SVM
 
-[Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#svm) · [Practicar](07-ejercicios-propuestos.md#svm) · [Pauta](09-pauta.md#svm)
+[← Anterior](02-modelos-lineales.md) · [Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#svm) · [Practicar](07-ejercicios-propuestos.md#svm) · [Pauta](09-pauta.md#svm) · [Siguiente →](04-embeddings-y-metricas.md)
 
 ## Teoría
 
 Clasificar es elegir una categoría. Un modelo **paramétrico**, como la regresión logística, tiene un número fijo de parámetros cuando fijas cuántos atributos recibe. En un modelo **no paramétrico**, su representación puede crecer con los datos. Por ejemplo, k-NN conserva ejemplos, un árbol puede tener más nodos y una SVM con RBF puede necesitar más soportes. Una SVM representada directamente por un vector lineal $w$ y un sesgo $b$ tiene tamaño fijo para una cantidad fija de atributos.
 
 Un modelo **discriminativo** aprende una regla de decisión o una probabilidad de clase a partir de las entradas. SVM y logística son ejemplos. Un modelo **generativo** puede modelar cómo se distribuyen los atributos dentro de cada clase, como GaussianNB.
+
+### k-NN y árboles de decisión
+
+- **k-NN:** clasifica según los $k$ vecinos más cercanos medidos con una distancia (habitualmente euclidiana sobre entradas escaladas). Un $k$ pequeño sigue mejor detalles locales pero es más sensible al ruido; un $k$ grande suaviza la frontera. Con pesos uniformes, la fracción de votos estima la probabilidad de cada clase.
+- **Árbol de decisión:** divide el espacio con reglas por umbral sobre un atributo a la vez buscando reducir la **impureza** de los nodos (Gini o entropía). Hiperparámetros como `max_depth` (profundidad máxima) y `min_samples_leaf` (mínimo de ejemplos en cada hoja) controlan la complejidad para evitar sobreajuste.
 
 ### Frontera, puntaje y margen
 
@@ -112,3 +117,7 @@ En el inciso a, RBF pasa de $\exp(-2)$ a $\exp(-4)\approx0{,}0183$. A la misma d
 - Para RBF usa la distancia **al cuadrado**. Escala dentro del pipeline al comparar `C` y `gamma` con validación.
 
 **Material del curso** · *Clase 10. Clasificadores fundamentales*, pp. 2–42. *Clase 9*, pp. 49–55. *Laboratorio 02*, pp. 33–36 y 56.
+
+---
+
+[← Anterior: 2. Regresión y clasificación lineal](02-modelos-lineales.md) · [Inicio](README.md) · [Practicar este tema](07-ejercicios-propuestos.md#svm) · [Siguiente: 4. Embeddings y evaluación →](04-embeddings-y-metricas.md)

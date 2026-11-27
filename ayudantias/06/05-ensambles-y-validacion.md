@@ -1,6 +1,6 @@
 # Ensambles y búsqueda de hiperparámetros
 
-[Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#ensambles-y-validación) · [Practicar](07-ejercicios-propuestos.md#ensambles-y-validación) · [Pauta](09-pauta.md#ensambles-y-validación)
+[← Anterior](04-embeddings-y-metricas.md) · [Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md#ensambles-y-validación) · [Practicar](07-ejercicios-propuestos.md#ensambles-y-validación) · [Pauta](09-pauta.md#ensambles-y-validación) · [Siguiente →](06-ayuda-memoria.md)
 
 ## Teoría
 
@@ -123,3 +123,7 @@ for nombre, busqueda in [("Grid", grid), ("Random", azar)]:
 - Lee la calidad junto con el costo de búsqueda. Anota semillas y compara casos concretos de confusión para justificar una elección.
 
 **Material del curso** · *Laboratorio 03. Ensambles y búsqueda de hiperparámetros*, pp. 9–43 y 46–49. *Clase 9*, pp. 56–62.
+
+---
+
+[← Anterior: 4. Embeddings y evaluación](04-embeddings-y-metricas.md) · [Inicio](README.md) · [Practicar este tema](07-ejercicios-propuestos.md#ensambles-y-validación) · [Siguiente: Ayuda memoria →](06-ayuda-memoria.md)

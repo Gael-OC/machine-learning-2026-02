@@ -1,6 +1,6 @@
 # Ejercicios propuestos
 
-[Inicio](README.md) · [Ayuda memoria](06-ayuda-memoria.md) · [Pauta completa](09-pauta.md)
+[← Anterior: Ayuda memoria](06-ayuda-memoria.md) · [Inicio](README.md) · [Pauta completa](09-pauta.md) · [Siguiente: Simulacro →](08-simulacro.md)
 
 Intenta cada ejercicio en papel antes de desplegar la pista. En los ejercicios de código, escribe o explica las líneas que faltan y predice qué se imprimiría. Conserva tus pasos para comparar con la pauta.
 
@@ -397,3 +397,7 @@ Cada posición corresponde al mismo candidato en las tres listas. En `cv_results
 </details>
 
 [Ver solución de P20](09-pauta.md#p20)
+
+---
+
+[← Anterior: Ayuda memoria](06-ayuda-memoria.md) · [Inicio](README.md) · [Pauta completa](09-pauta.md) · [Siguiente: Simulacro de 100 puntos →](08-simulacro.md)

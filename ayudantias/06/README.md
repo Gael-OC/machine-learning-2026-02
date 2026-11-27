@@ -1,5 +1,7 @@
 # Ayudantía 06 · Preparación para la Prueba 2
 
+[← Volver al repositorio](../../README.md) · [Empezar por 1. Preparación de datos y PCA →](01-preparacion-y-pca.md)
+
 La prueba combina teoría (50 %) con desarrollo y código (50 %). En la parte teórica practicarás selección múltiple, completar oraciones y unir conceptos con sus definiciones. En la parte aplicada practicarás cuentas a mano, completar fragmentos de Python y explicar qué hace un programa.
 
 ## Cómo estudiar
