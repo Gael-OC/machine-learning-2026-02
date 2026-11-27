@@ -54,6 +54,9 @@ El material de cada ayudantía resume lo que se trabaja en la sesión. El detall
 * **Ayudantía 05 — PCA, regresión lineal, regresión logística y Pipeline** — [Enunciado y pauta (PDF)](./ayudantias/05/AY05___PCA_y_algoritmos_lineales.pdf) · [Resolución paso a paso](./ayudantias/05/05-pca-y-algoritmos-lineales-resuelta.md)
   Desarrollo de los cuatro ejercicios de preparación para la prueba, con cuentas intermedias, código explicado y mini prácticas.
 
+* **Ayudantía 06 — Preparación Prueba 2** — [Ver guías y simulacro](./ayudantias/06/README.md)
+  Teoría desde lo básico, ejercicios resueltos, ayuda memoria y práctica de teoría, desarrollo y código con pauta de autocorrección.
+
 ---
 
 > **Nota de uso:** Este repositorio es material de consulta. Puedes leerlo en GitHub o clonarlo para tener las guías en local. Los laboratorios del profesor se trabajan con **fork** ([Guía 01](./guias/01-git-y-github.md)), no haciendo fork de este repo.
